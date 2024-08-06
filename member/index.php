@@ -1,5 +1,5 @@
 <?php
-// 這也是會員資料的 index
+// 這也是會員清單資料的 index
 
 require_once("../conn.php");
 
@@ -8,35 +8,43 @@ $perPage = 25;
 $page = isset($_GET["page"]) ? (int)$_GET["page"] : 1;
 $pageStart = ($page - 1) * $perPage;
 
+
 // 設定是否已驗證，2是全部，1是已驗證，0是未驗證
 $cid = isset($_GET["cid"]) ? (int)$_GET["cid"] : 2;
-if ($cid === 2) {
+if ($cid == 2) {
     $cidSql = "";
 } else {
-    $cidSql = "WHERE `is_active` = $cid";
+    $cidSql = "`is_active` = $cid AND ";
 }
 
+
+// 設定模糊搜尋
+$searchType = isset($_GET["stype"]) ? $_GET["stype"] : "" ;
+$searchText = isset($_GET["search"]) ? $_GET["search"] : "" ;
+$sqlSearch = ($searchType && $searchText) ? "`$searchType` LIKE '%$searchText%' AND " : "";
+
+
 // SQL語法
-$sql = "SELECT * FROM `user` $cidSql LIMIT $pageStart, $perPage";
-$sqlAll = "SELECT * FROM `user`";
-$sqlCity = "SELECT * FROM `city`";
+$sql = "SELECT * FROM `user` where $cidSql $sqlSearch `user_created_at` < NOW() LIMIT $pageStart, $perPage;";
+$sqlCity = "SELECT * FROM `city`;";
+$sqlCount = "SELECT COUNT(*) as total FROM user WHERE $cidSql $sqlSearch `user_created_at` < NOW();";
+// 計算總數的SQL，AS total 為查詢結果中的計數欄位起了一個名稱 total
+
 
 // 連結資料庫
 $stmt = $conn->prepare($sql);
-$stmtAll = $conn->prepare($sqlAll);
 $stmtCity = $conn->prepare($sqlCity);
+$stmtCount = $conn->prepare($sqlCount);
+
 
 try {
+    $stmtCount->execute();
+    $totalCount = $stmtCount->fetch(PDO::FETCH_ASSOC)['total'];
+    $totalPage = ceil($totalCount / $perPage);
+
     $stmt->execute();
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $count = count($rows);
-    $totalPage = ceil($count / $perPage);
-    
-    $stmtAll->execute();
-    $rowsAll = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
-    $countAll = count($rowsAll);
-    $totalPageAll = ceil($countAll / $perPage);
-    
+
     $stmtCity->execute();
     $rowsCity = $stmtCity->fetchAll(PDO::FETCH_ASSOC);
     $conn = NULL;
@@ -45,7 +53,14 @@ try {
     $conn = NULL;
     exit;
 }
+
+echo "<pre>";
+var_dump($sql);
+echo "</pre>";
+
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="zh-hant-TW">
@@ -59,81 +74,127 @@ try {
         .container {
             width: 95%;
         }
+
+        .title {
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* .top {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        } */
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h1>會員名單</h1>
-        <p>你正在第<?= $page ?>頁，每頁<?= $perPage ?>筆資料，總共有<?= $countAll ?>筆資料</p>
-        <div class="tab">
-            <ul class="nav nav-tabs">
-                <li class="nav-item">
-                    <a class="nav-link <?= $cid === 2 ? 'active' : '' ?>" aria-current="page" href="./index.php?cid=2<?= ($page >= 1) ? "&page=$page" : "" ?>">全部</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <?= $cid === 1 ? 'active' : '' ?>" aria-current="page" href="./index.php?cid=1<?= ($page >= 1) ? "&page=$page" : "" ?>">完成身分驗證</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <?= $cid === 0 ? 'active' : '' ?>" aria-current="page" href="./index.php?cid=0<?= ($page >= 1) ? "&page=$page" : "" ?>">未驗證</a>
-                </li>
-            </ul>
-        </div>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">會員編號</th>
-                    <th scope="col">姓名</th>
-                    <th scope="col">註冊日期</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">電話號碼</th>
-                    <th scope="col">生日</th>
-                    <th scope="col">居住縣市</th>
-                    <th scope="col" class="control">修改/刪除</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($rows as $row) : ?>
-                    <tr>
-                        <td><?= $row["user_id"] ?></td>
-                        <td><?= $row["user_full_name"] ?></td>
-                        <td><?= $row["user_created_at"] ?></td>
-                        <td><?= $row["user_email"] ?></td>
-                        <td><?= $row["user_phone_number"] ?></td>
-                        <td><?= $row["user_birthday"] ?></td>
-                        <td>
-                            <?php
-                            $cityName = "";
-                            foreach ($rowsCity as $rowCity) {
-                                if ($row["city_id"] == $rowCity["city_id"]) {
-                                    $cityName = $rowCity["city_name"];
-                                    break;
-                                }
-                            }
-                            echo $cityName;
-                            ?>
-                        </td>
-                        <td>
-                            <button class="btn btn-danger">刪除</button>
-                            <button class="btn btn-warning">修改</button>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-        <div class="page-number">
-            <nav aria-label="...">
-                <ul class="pagination pagination-sm">
-                    <? for( $i=1; $i <= $totalPage; $i++): ?>
-                    <li class="page-item <?= ($page == $i) ? 'active' : '' ?>">
-                        <a class="page-link" href="./index.php?page=<?=$i?><?=($cid>=0)?"&cid=$cid":""?>"> <?= $i ?> </a>
+        <h1 class="title">會員名單</h1>
+        <div class="top">
+            <div class="top-left">
+                <p>你正在第<?= $page ?>頁，每頁<?= $perPage ?>筆資料，總共有<?= $totalCount ?>筆資料</p>
+            </div>
+            <div class="top-right me-1">
+                <div class="input-group input-group-sm">
+                    <div class="input-group-text">
+                        <input type="radio" name="searchType" id="searchType1" value="user_full_name">
+                        <label for="searchType1">姓名</label>
+                        <input type="radio" name="searchType" id="searchType2" value="user_phone_number">
+                        <label for="searchType2" class="">電話</label>
+                        <input type="text" name="search" class="form-control form-control-sm" placeholder="輸入關鍵字">
+                        <div class="btn btn-primary btn-sm btn-search">搜尋</div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link tag2 <?= $cid === 2 ? 'active' : '' ?>" aria-current="page" href="./index.php?cid=2<?= "&page=1" ?>">全部</a>
                     </li>
-                    <?php endfor; ?>
+                    <li class="nav-item">
+                        <a class="nav-link tag1 <?= $cid === 1 ? 'active' : '' ?>" aria-current="page" href="./index.php?cid=1<?= "&page=1" ?>">完成身分驗證</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link tag0 <?= $cid === 0 ? 'active' : '' ?>" aria-current="page" href="./index.php?cid=0<?= "&page=1" ?>">未驗證</a>
+                    </li>
+                </ul>
+            </div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <!-- <th scope="col">序</th> -->
+                        <th scope="col">會員編號</th>
+                        <th scope="col">姓名</th>
+                        <th scope="col">註冊日期</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">電話號碼</th>
+                        <!-- <th scope="col">生日</th> -->
+                        <th scope="col">驗證身分</th>
+                        <th scope="col">居住縣市</th>
+                        <th scope="col" class="control">修改/刪除</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($rows as $index => $row) : ?>
+                        <tr>
+                            <!-- <td><?= $pageStart + $index + 1 ?></td> -->
+                            <td><?= $row["user_id"] ?></td>
+                            <td><?= $row["user_full_name"] ?></td>
+                            <td><?= $row["user_created_at"] ?></td>
+                            <td><?= $row["user_email"] ?></td>
+                            <td><?= $row["user_phone_number"] ?></td>
+                            <!-- <td><?= $row["user_birthday"] ?></td> -->
+                            <td><?= $row["is_active"] ?></td>
+                            <td>
+                                <?php
+                                $cityName = "";
+                                foreach ($rowsCity as $rowCity) {
+                                    if ($row["city_id"] == $rowCity["city_id"]) {
+                                        $cityName = $rowCity["city_name"];
+                                        break;
+                                    }
+                                }
+                                echo $cityName;
+                                ?>
+                            </td>
+                            <td>
+                                <button class="btn btn-danger">刪除</button>
+                                <button class="btn btn-warning">修改</button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <nav aria-label="...">
+                <ul class="pagination pagination-lg">
+                    <? for ($i = 1; $i <= $totalPage; $i++) : ?>
+                        <li class="page-item"><a class="page-link" href="./index.php?page=<?= $i ?><?= "&cid=$cid" ?><?= ($searchType != "" && $searchText != "") ? "&stype=$searchType&search=$searchText": ""  ?>"><?= $i ?></a></li>
+                    <? endfor; ?>
                 </ul>
             </nav>
         </div>
-    </div>
 
 </body>
+<script>
+    let btnSearch = document.querySelector(".btn-search");
 
+    btnSearch.addEventListener("click", e =>{
+        
+        let searchType = document.querySelector("input[name=searchType]:checked").value;
+        let searchText = document.querySelector("input[name=search]").value;
+        let currentCid = new URLSearchParams(window.location.search).get('cid');
+
+
+        console.log(currentCid);
+        if (searchType) {
+            window.location.href = `./index.php?stype=${searchType}&search=${searchText}&page=1&cid=${currentCid}`;
+        } else {
+            alert("請選擇搜索類型");
+        }
+    })
+
+    
+
+</script>
 </html>
