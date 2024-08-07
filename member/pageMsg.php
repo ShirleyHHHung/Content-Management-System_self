@@ -136,7 +136,7 @@ foreach ($rowsDistrict as $rowDistrict) {
             </div>
             <div class="mb-3">
                 <label for="" class="form-label">地址</label>
-                <input type="text" class="form-control" id="" value="<?= $row["user_address"] ?>" aria-describedby="emailHelp">
+                <input name="user_address" class="form-control" id="" value="<?= $row["user_address"] ?>">
             </div>
             <div class="mb-3 form-check">
                 <!-- 單選 -->

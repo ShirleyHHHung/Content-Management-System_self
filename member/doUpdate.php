@@ -4,16 +4,16 @@
 require_once("../conn.php");
 
 $userId = $_POST["user_id"];
-$isActive = (int)$_POST["is_active"];
+$isActive = $_POST["is_active"];
 $name = $_POST["user_full_name"];
 $userEmail = $_POST["user_email"];
-$userSex = (int)$_POST["user_sex"];
+$userSex = $_POST["user_sex"];
 $userPhoneNumber = $_POST["user_phone_number"];
 $userBirthday = $_POST["user_birthday"];
-$cityId = (int)$_POST["city_id"];
-$districtId = (int)$_POST["district_id"];
-$userAddress = (int)$_POST["user_address"];
-$roleId = (int)$_POST["role_id"];
+$cityId = $_POST["city_id"];
+$districtId = $_POST["district_id"];
+$userAddress = $_POST["user_address"];
+$roleId = $_POST["role_id"];
 
 
 
@@ -25,8 +25,8 @@ $sql = "UPDATE `user` SET `is_active` = '$isActive',
 `user_birthday` = '$userBirthday', 
 `city_id` = '$cityId', 
 `district_id` = '$districtId', 
-`user_address` = '$userAddress' 
-`role_id` = '$roleId' 
+`user_address` = '$userAddress',
+`role_id` = '$roleId'
 WHERE `user_id` = $userId;";
 
 $stmt = $conn->prepare($sql);

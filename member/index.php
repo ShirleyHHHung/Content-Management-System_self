@@ -9,12 +9,15 @@ $page = isset($_GET["page"]) ? (int)$_GET["page"] : 1;
 $pageStart = ($page - 1) * $perPage;
 
 
-// 設定是否已驗證，2是全部，1是已驗證，0是未驗證
+
+// 設定是否已驗證，2是全部，1是已驗證，0是未驗證，6是封鎖
 $cid = isset($_GET["cid"]) ? (int)$_GET["cid"] : 2;
-if ($cid == 2) {
-    $cidSql = "";
-} else {
-    $cidSql = "`is_active` = $cid AND ";
+if ($cid == 2){
+    $cidSql = "`user_valid` = 1 AND";
+} elseif($cid == 3){
+    $cidSql = "`user_valid` = 0 AND";
+}else{
+    $cidSql = "`is_active` = $cid AND `user_valid` = 1 AND " ;
 }
 
 
@@ -22,6 +25,8 @@ if ($cid == 2) {
 $searchType = isset($_GET["stype"]) ? $_GET["stype"] : "";
 $searchText = isset($_GET["search"]) ? $_GET["search"] : "";
 $sqlSearch = ($searchType && $searchText) ? "`$searchType` LIKE '%$searchText%' AND " : "";
+
+// 封鎖名單
 
 
 // SQL語法
@@ -118,6 +123,9 @@ echo "</pre>";
                     <li class="nav-item">
                         <a class="nav-link tag0 <?= $cid === 0 ? 'active' : '' ?>" aria-current="page" href="./index.php?cid=0<?= "&page=1" ?>">未驗證</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link tag0 <?= $cid === 3 ? 'active' : '' ?>" aria-current="page" href="./index.php?cid=3<?= "&page=1" ?>">封鎖</a>
+                    </li>
                 </ul>
             </div>
             <table class="table table-hover">
@@ -159,8 +167,10 @@ echo "</pre>";
                                 ?>
                             </td>
                             <td>
-                                <button class="btn btn-danger">刪除</button>
-                                <a href="./pageMsg.php?id= <?= (int)$row["user_id"] ?>">
+                                <a class="delete-button" idn="<?= (int)$row["user_id"]?>">
+                                    <button class="btn btn-danger">封鎖</button>
+                                </a>
+                                <a href="./pageMsg.php?id=<?= (int)$row["user_id"] ?>">
                                     <button class="btn btn-warning" >修改</button>
                                 </a>
                             </td>
@@ -177,9 +187,6 @@ echo "</pre>";
             </nav>
         </div>
 
-
-
-
         <script>
             let btnSearch = document.querySelector(".btn-search");
             btnSearch.addEventListener("click", e => {
@@ -195,6 +202,17 @@ echo "</pre>";
                     // 這行不知道為什麼沒有作用
                 }
             })
+
+            let deleteButton = document.querySelectorAll(".delete-button");
+            deleteButton.forEach(function(btn){
+                btn.addEventListener("click", function(e){
+                if(confirm("確定要封鎖?") == true){
+                    window.location.href = "./doDelete.php?id="+this.getAttribute("idn");
+                }
+            })
+            })
+
+            
         </script>
 </body>
 
