@@ -19,8 +19,8 @@ if ($cid == 2) {
 
 
 // 設定模糊搜尋
-$searchType = isset($_GET["stype"]) ? $_GET["stype"] : "" ;
-$searchText = isset($_GET["search"]) ? $_GET["search"] : "" ;
+$searchType = isset($_GET["stype"]) ? $_GET["stype"] : "";
+$searchText = isset($_GET["search"]) ? $_GET["search"] : "";
 $sqlSearch = ($searchType && $searchText) ? "`$searchType` LIKE '%$searchText%' AND " : "";
 
 
@@ -160,41 +160,42 @@ echo "</pre>";
                             </td>
                             <td>
                                 <button class="btn btn-danger">刪除</button>
-                                <button class="btn btn-warning">修改</button>
+                                <a href="./pageMsg.php?id= <?= (int)$row["user_id"] ?>">
+                                    <button class="btn btn-warning" >修改</button>
+                                </a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
             <nav aria-label="...">
-                <ul class="pagination pagination-lg">
+                <ul class="pagination pagination-sm">
                     <? for ($i = 1; $i <= $totalPage; $i++) : ?>
-                        <li class="page-item"><a class="page-link" href="./index.php?page=<?= $i ?><?= "&cid=$cid" ?><?= ($searchType != "" && $searchText != "") ? "&stype=$searchType&search=$searchText": ""  ?>"><?= $i ?></a></li>
+                        <li class="page-item"><a class="page-link" href="./index.php?page=<?= $i ?><?= "&cid=$cid" ?><?= ($searchType != "" && $searchText != "") ? "&stype=$searchType&search=$searchText" : ""  ?>"><?= $i ?></a></li>
                     <? endfor; ?>
                 </ul>
             </nav>
         </div>
 
+
+
+
+        <script>
+            let btnSearch = document.querySelector(".btn-search");
+            btnSearch.addEventListener("click", e => {
+                let searchType = document.querySelector("input[name=searchType]:checked").value;
+                let searchText = document.querySelector("input[name=search]").value;
+                // 找網址中參數，要記得打''
+                let currentCid = new URLSearchParams(window.location.search).get('cid');
+
+                if (searchType) {
+                    window.location.href = `./index.php?stype=${searchType}&search=${searchText}&page=1&cid=${currentCid}`;
+                } else {
+                    alert("請選擇搜索類型");
+                    // 這行不知道為什麼沒有作用
+                }
+            })
+        </script>
 </body>
-<script>
-    let btnSearch = document.querySelector(".btn-search");
 
-    btnSearch.addEventListener("click", e =>{
-        
-        let searchType = document.querySelector("input[name=searchType]:checked").value;
-        let searchText = document.querySelector("input[name=search]").value;
-        let currentCid = new URLSearchParams(window.location.search).get('cid');
-
-
-        console.log(currentCid);
-        if (searchType) {
-            window.location.href = `./index.php?stype=${searchType}&search=${searchText}&page=1&cid=${currentCid}`;
-        } else {
-            alert("請選擇搜索類型");
-        }
-    })
-
-    
-
-</script>
 </html>
