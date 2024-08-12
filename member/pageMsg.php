@@ -86,8 +86,7 @@ try {
                 </div>
                 <div class="mb-3 text-center">
                     <label for="user_email" class="form-label">Email</label>
-                    <input name="user_email" type="email" class="form-control form-control-plaintext" id="user_email" value="<?= $row["user_email"] ?>" readonly>
-                    <span class="form-text text-danger" idn="emailErrorText"></span>
+                    <div name="user_email" class="form-text"><?= $row["user_email"] ?></div>
                 </div>
                 <div class="mb-3 text-center">
                     <label for="" class="form-label">註冊日期</label>
