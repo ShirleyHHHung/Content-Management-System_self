@@ -62,10 +62,6 @@
         <h1 class="title">新增會員資料</h1>
         <form action="./doInsert.php" method="POST">
             <div class="mb-3">
-                    <label for="userId" class="form-label" >user ID</label>
-                    <input name="user_id" type="text" class="form-control" id="userId"  >
-                </div>
-            <div class="mb-3">
                 <label for="user_password" class="form-label">密碼</label>
                 <input name="user_password" type="text" class="form-control" id="user_password">
             </div>
@@ -155,9 +151,7 @@
                     <label class="form-check-label" for="exampleCheck4">未通過驗證</label>
                 </div>
             </div> -->
-            <a href="">
-                <button type="submit" class="btn btn-primary" >送出新增</button>
-            </a>
+            <button type="submit" class="btn btn-primary" id="addDataButton">送出新增</button>
         </form>
     </div>
     <script>
@@ -200,6 +194,14 @@
             })
         });
 
+
+        //確認是否要新增
+        const addDataButton = document.querySelector("#addDataButton");
+        addDataButton.addEventListener("click", e=>{
+            if(confirm("確認要新增這筆會員資料?") == false){
+                e.preventDefault();
+            }
+        })
 
     </script>
 </body>

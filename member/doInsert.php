@@ -4,10 +4,14 @@
 require_once("../conn.php");
 
 
+// 避免直接透過網址進入，造成空資料
+if($_POST["user_full_name"] == ""){
+    header("Location: https://www.google.com.tw/?hl=zh_TW");
+    exit;
+}
+
+
 // 變數設定
-
-
-
 $name = $_POST["user_full_name"];
 $password = $_POST["user_password"];
 $userEmail = $_POST["user_email"];
@@ -38,6 +42,6 @@ try{
     exit;
 }
 
-echo "順利新增一筆資料!!";
+header("Location: ./index.php");
 
 ?>

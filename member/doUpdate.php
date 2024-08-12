@@ -3,6 +3,13 @@
 
 require_once("../conn.php");
 
+// 避免不是透過後台，是直接輸入網址進入的人
+if($_POST["user_full_name"] == ""){
+    header("Location: https://www.google.com.tw/?hl=zh_TW");
+    exit;
+}
+
+
 $userId = $_POST["user_id"];
 $isActive = $_POST["is_active"];
 $name = $_POST["user_full_name"];
@@ -41,5 +48,6 @@ try{
     exit;
 }
 
+header("Location: ./index.php")
 
 ?>

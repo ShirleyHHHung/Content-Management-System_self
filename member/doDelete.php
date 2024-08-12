@@ -4,6 +4,13 @@
 
 require_once("../conn.php");
 
+// 避免不是透過後台，是直接輸入網址進入的人
+if($_POST["user_full_name"] == ""){
+    header("Location: https://www.google.com.tw/?hl=zh_TW");
+    exit;
+}
+
+
 $userId = $_GET["id"];
 
 $sql = "UPDATE `user` SET `user_valid` = '0' WHERE `user_id` = $userId";
@@ -20,6 +27,6 @@ try{
     exit;
 }
 
-echo "轉跳成功到刪除頁!!"
+header("Location: ./index.php");
 
 ?>

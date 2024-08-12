@@ -182,9 +182,7 @@ try{
                     <label class="form-check-label" for="exampleCheck4">未通過驗證</label>
                 </div>
             </div>
-            <a href="">
-                <button type="submit" class="btn btn-primary" >送出</button>
-            </a>
+            <button type="submit" class="btn btn-primary" id="modifyConfirmButton">送出</button>
         </form>
     </div>
     <SCript>
@@ -225,8 +223,17 @@ try{
             })
         });
 
-
-
+        // comfirm確定要修改
+        const modifyConfirmButton = document.querySelector("#modifyConfirmButton");
+        modifyConfirmButton.addEventListener("click", e=>{
+            if(confirm("確定要修改?") == false){
+                e.preventDefault();
+            }else{
+                e.target.form.submit(); // 提交表單
+                }
+                
+        })
+        
     </SCript>
 </body>
 
