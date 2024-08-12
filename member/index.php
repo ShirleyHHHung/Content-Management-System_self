@@ -153,19 +153,8 @@ echo "</pre>";
                             <td><?= $row["user_email"] ?></td>
                             <td><?= $row["user_phone_number"] ?></td>
                             <!-- <td><?= $row["user_birthday"] ?></td> -->
-                            <td><?= $row["is_active"] ?></td>
-                            <td>
-                                <?php
-                                $cityName = "";
-                                foreach ($rowsCity as $rowCity) {
-                                    if ($row["city_id"] == $rowCity["city_id"]) {
-                                        $cityName = $rowCity["city_name"];
-                                        break;
-                                    }
-                                }
-                                echo $cityName;
-                                ?>
-                            </td>
+                            <td><?= ($row["is_active"]==1)?"完成":"等待驗證" ?></td>
+                            <td><?= $row["city_id"] ?></td>
                             <td>
                                 <a class="delete-button" idn="<?= (int)$row["user_id"]?>">
                                     <button class="btn btn-danger">封鎖</button>

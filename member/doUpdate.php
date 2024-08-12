@@ -1,5 +1,5 @@
 <?
-// 編輯(更新)的api
+// 編輯(更新)的功能
 
 require_once("../conn.php");
 

@@ -1,58 +1,43 @@
 <?
-// 編輯會員資料頁
+// 新增會員頁
 
-require_once("../conn.php");
+// require_once("../conn.php");
 
-$userID = $_GET["id"];
+// $sqlCity = "SELECT * FROM `city`;";
+// $sqlDistrict = "SELECT * FROM `district`";
 
+// // 連結資料庫資料
+// $stmtCity = $conn->prepare($sqlCity);
+// $stmtDistrict = $conn->prepare($sqlDistrict);
 
-// SQL語法
-$sql = "SELECT * FROM `user` WHERE `user_id` = $userID";
-$sqlCity = "SELECT * FROM `city`;";
-$sqlDistrict = "SELECT * FROM `district`";
-
-
-// 連結資料庫
-$stmt = $conn->prepare($sql);
-$stmtCity = $conn->prepare($sqlCity);
-$stmtDistrict = $conn->prepare($sqlDistrict);
-
-
-try{
-    $stmt->execute();
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    $stmtCity->execute();
-    $rowsCity = $stmtCity->fetchAll(PDO::FETCH_ASSOC);
+// try{
+//     $stmtCity->execute();
+//     $rowsCity = $stmtCity->fetchAll(PDO::FETCH_ASSOC);
     
-    $stmtDistrict->execute();
-    $rowsDistrict = $stmtDistrict->fetchAll(PDO::FETCH_ASSOC);
+//     $stmtDistrict->execute();
+//     $rowsDistrict = $stmtDistrict->fetchAll(PDO::FETCH_ASSOC);
 
-    $conn = NULL;
-}catch (PDOException $e) {
-    echo "你的資料讀取失敗欸!因為:" . $e->getMessage();
-    $conn = NULL;
-    exit;
-}
-
-
-// 將行政區域數據按照 city_id 分組
-// $districtsByCity = [];
-// foreach ($rowsDistrict as $rowDistrict) {
-//     $districtsByCity[$rowDistrict['city_id']][] = $rowDistrict;
+//     $conn = NULL;
+// }catch (PDOException $e) {
+//     echo "你的資料讀取失敗欸!因為:" . $e->getMessage();
+//     $conn = NULL;
+//     exit;
 // }
+
+// echo "<pre>";
+// var_dump($rowsDistrict);
+// echo "</pre>";
+
+// exit;
 
 ?>
 
-
-
 <!DOCTYPE html>
 <html lang="zh-hant-TW">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>新增會員</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <style>
         .container{
@@ -72,76 +57,68 @@ try{
         }
     </style>
 </head>
-
 <body>
-    <div class="container">
-        <h1 class="title">編輯會員資料</h1>
-        <form action="./doUpdate.php" method="POST">
-            <div class="info info-box">
-                <div class="mb-3">
-                    <label for="" class="form-label">user ID</label>
-                    <div name="user_id" id="text" class="form-text"><?= $row["user_id"] ?></div>
-                </div>
-                <div class="mb-3">
-                    <label for="" class="form-label">註冊日期</label>
-                    <div id="text" class="form-text"><?= $row["user_created_at"] ?></div>
-                </div>
-            </div>
-            <div class="mb-3" hidden>
-                    <label for="userIdHidden" class="form-label" >user ID</label>
-                    <input name="user_id" type="text" class="form-control" id="userIdHidden" value="<?= $row["user_id"] ?>" >
+<div class="container">
+        <h1 class="title">新增會員資料</h1>
+        <form action="./doInsert.php" method="POST">
+            <div class="mb-3">
+                    <label for="userId" class="form-label" >user ID</label>
+                    <input name="user_id" type="text" class="form-control" id="userId"  >
                 </div>
             <div class="mb-3">
+                <label for="user_password" class="form-label">密碼</label>
+                <input name="user_password" type="text" class="form-control" id="user_password">
+            </div>
+            <div class="mb-3">
                 <label for="user_full_name" class="form-label">姓名</label>
-                <input name="user_full_name" type="text" class="form-control" id="user_full_name" value="<?= $row["user_full_name"] ?>" >
+                <input name="user_full_name" type="text" class="form-control" id="user_full_name">
             </div>
             <div class="mb-3">
                 <label for="user_phone_number" class="form-label">手機</label>
-                <input name="user_phone_number" type="text" class="form-control" id="user_phone_number" value="<?= $row["user_phone_number"] ?>" >
+                <input name="user_phone_number" type="text" class="form-control" id="user_phone_number">
             </div>
             <div class="mb-3">
                 <label for="user_email" class="form-label">Email</label>
-                <input name="user_email" type="email" class="form-control" id="user_email" value="<?= $row["user_email"] ?>" >
+                <input name="user_email" type="email" class="form-control" id="user_email">
             </div>
             <div class="mb-3">
                 <!-- 下拉選單 -->
                 <label for="user_sex" class="form-label">性別</label>
                 <select name="user_sex" id="user_sex" class="form-select">
-                    <option value="1" <?= ($row["user_sex"]==1)? "selected": "" ?> >男性</option>
-                    <option value="2" <?= ($row["user_sex"]==2)? "selected": "" ?> >女性</option>
+                    <option value="1">男性</option>
+                    <option value="2">女性</option>
                 </select>
             </div>
             <div class="mb-3">
                 <label for="" class="form-label">生日</label>
-                <input name="user_birthday" type="date" class="form-control" id="" value="<?= $row["user_birthday"] ?>">
+                <input name="user_birthday" type="date" class="form-control" id="">
             </div>
             <div class="mb-3">
                 <!-- 下拉選單 -->
                 <label for="cityId" class="form-label">居住縣市</label>
                 <select name="city_id" id="cityId" class="form-select">
-                    <option value="" disabled> 請選擇 </option>
-                    <option value="臺北市" <?= ($row["city_id"]=="臺北市") ? "selected": "" ?>>臺北市</option>
-                    <option value="新北市" <?= ($row["city_id"]=="新北市") ? "selected": "" ?>>新北市</option>
-                    <option value="桃園市" <?= ($row["city_id"]=="桃園市") ? "selected": "" ?>>桃園市</option>
-                    <option value="臺中市" <?= ($row["city_id"]=="臺中市") ? "selected": "" ?>>臺中市</option>
-                    <option value="臺南市" <?= ($row["city_id"]=="臺南市") ? "selected": "" ?>>臺南市</option>
-                    <option value="高雄市" <?= ($row["city_id"]=="高雄市") ? "selected": "" ?>>高雄市</option>
-                    <option value="宜蘭縣" <?= ($row["city_id"]=="宜蘭縣") ? "selected": "" ?>>宜蘭縣</option>
-                    <option value="新竹縣" <?= ($row["city_id"]=="新竹縣") ? "selected": "" ?>>新竹縣</option>
-                    <option value="苗栗縣" <?= ($row["city_id"]=="苗栗縣") ? "selected": "" ?>>苗栗縣</option>
-                    <option value="彰化縣" <?= ($row["city_id"]=="彰化縣") ? "selected": "" ?>>彰化縣</option>
-                    <option value="南投縣" <?= ($row["city_id"]=="南投縣") ? "selected": "" ?>>南投縣</option>
-                    <option value="雲林縣" <?= ($row["city_id"]=="雲林縣") ? "selected": "" ?>>雲林縣</option>
-                    <option value="嘉義縣" <?= ($row["city_id"]=="嘉義縣") ? "selected": "" ?>>嘉義縣</option>
-                    <option value="屏東縣" <?= ($row["city_id"]=="屏東縣") ? "selected": "" ?>>屏東縣</option>
-                    <option value="花蓮縣" <?= ($row["city_id"]=="花蓮縣") ? "selected": "" ?>>花蓮縣</option>
-                    <option value="臺東縣" <?= ($row["city_id"]=="臺東縣") ? "selected": "" ?>>臺東縣</option>
-                    <option value="澎湖縣" <?= ($row["city_id"]=="澎湖縣") ? "selected": "" ?>>澎湖縣</option>
-                    <option value="基隆市" <?= ($row["city_id"]=="基隆市") ? "selected": "" ?>>基隆市</option>
-                    <option value="嘉義市" <?= ($row["city_id"]=="臺北市") ? "selected": "" ?>>嘉義市</option>
-                    <option value="新竹市" <?= ($row["city_id"]=="嘉義市") ? "selected": "" ?>>新竹市</option>
-                    <option value="金門縣" <?= ($row["city_id"]=="金門縣") ? "selected": "" ?>>金門縣</option>
-                    <option value="連江縣" <?= ($row["city_id"]=="連江縣") ? "selected": "" ?>>連江縣</option>
+                    <option value="臺北市">臺北市</option>
+                    <option value="新北市">新北市</option>
+                    <option value="桃園市">桃園市</option>
+                    <option value="臺中市">臺中市</option>
+                    <option value="臺南市">臺南市</option>
+                    <option value="高雄市">高雄市</option>
+                    <option value="宜蘭縣">宜蘭縣</option>
+                    <option value="新竹縣">新竹縣</option>
+                    <option value="苗栗縣">苗栗縣</option>
+                    <option value="彰化縣">彰化縣</option>
+                    <option value="南投縣">南投縣</option>
+                    <option value="雲林縣">雲林縣</option>
+                    <option value="嘉義縣">嘉義縣</option>
+                    <option value="屏東縣">屏東縣</option>
+                    <option value="花蓮縣">花蓮縣</option>
+                    <option value="臺東縣">臺東縣</option>
+                    <option value="澎湖縣">澎湖縣</option>
+                    <option value="基隆市">基隆市</option>
+                    <option value="嘉義市">嘉義市</option>
+                    <option value="新竹市">新竹市</option>
+                    <option value="金門縣">金門縣</option>
+                    <option value="連江縣">連江縣</option>
                 </select>
                 
             </div>
@@ -149,47 +126,44 @@ try{
                 <!-- 下拉選單 -->
                 <label for="districtId" class="form-label">行政區域</label>
                 <select name="district_id" id="districtId" class="form-select">
-
-                    <option value=""> <?= $row["district_id"] ?> </option>
-
+                    <option>請選擇</option>
                 </select>
             </div>
             <div class="mb-3">
                 <label for="" class="form-label">地址</label>
-                <input name="user_address" class="form-control" id="" value="<?= $row["user_address"] ?>">
+                <input name="user_address" class="form-control" id="">
             </div>
-            <div class="mb-3 form-check">
-                <!-- 單選 -->
+            <!-- <div class="mb-3 form-check">
                 <span>是否為教練</span>
                 <div>
-                    <input type="radio" name="role_id" id="exampleCheck1" class="form-check-input" value="1" <?= ($row["role_id"]==1)?"checked":"" ?> >
+                    <input type="radio" name="role_id" id="exampleCheck1" class="form-check-input" value="1">
                     <label class="form-check-label" for="exampleCheck1" >是</label>
                 </div>
                 <div>
-                    <input type="radio" name="role_id" class="form-check-input" id="exampleCheck2" value="0" <?= ($row["role_id"]==0)?"checked":"" ?> >
+                    <input type="radio" name="role_id" class="form-check-input" id="exampleCheck2" value="0">
                     <label class="form-check-label" for="exampleCheck2" >否</label>
                 </div>
             </div>
             <div class="mb-3 form-check">
-                <!-- 單選 -->
                 <span>Email驗證</span>
                 <div>
-                    <input type="radio" class="form-check-input" id="exampleCheck3" value="1" name="is_active"  <?= ($row["is_active"]==1)?"checked":"" ?>>
+                    <input type="radio" class="form-check-input" id="exampleCheck3" value="1" name="is_active" >
                     <label class="form-check-label" for="exampleCheck3">已完成驗證</label>
                 </div>
                 <div>
-                    <input type="radio" class="form-check-input" id="exampleCheck4" value="0" name="is_active"  <?= ($row["is_active"]==0)?"checked":"" ?>>
+                    <input type="radio" class="form-check-input" id="exampleCheck4" value="0" name="is_active">
                     <label class="form-check-label" for="exampleCheck4">未通過驗證</label>
                 </div>
-            </div>
+            </div> -->
             <a href="">
-                <button type="submit" class="btn btn-primary" >送出</button>
+                <button type="submit" class="btn btn-primary" >送出新增</button>
             </a>
         </form>
     </div>
-    <SCript>
+    <script>
         const selectCity = document.querySelector("#cityId");
         const selectDistrict = document.querySelector("[name=district_id]")
+
         const arrayDistrict =[
             ['中正區', '大同區', '中山區', '萬華區', '信義區', '松山區', '大安區', '南港區', '北投區', '內湖區', '士林區', '文山區'],
             ['板橋區', '新莊區', '泰山區', '林口區', '淡水區', '金山區', '八里區', '萬里區', '石門區', '三芝區', '瑞芳區', '汐止區', '平溪區', '貢寮區', '雙溪區', '深坑區', '石碇區', '新店區', '坪林區', '烏來區', '中和區', '永和區', '土城區', '三峽區', '樹林區', '鶯歌區', '三重區', '蘆洲區', '五股區'],
@@ -215,6 +189,7 @@ try{
             ['南竿鄉', '北竿鄉', '莒光鄉', '東引鄉']
         ];
 
+    
         selectCity.addEventListener("change", function(){
             console.log(arrayDistrict[selectCity.selectedIndex])
             selectDistrict.innerHTML = "";
@@ -226,8 +201,6 @@ try{
         });
 
 
-
-    </SCript>
+    </script>
 </body>
-
 </html>
