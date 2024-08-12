@@ -62,37 +62,45 @@
         <h1 class="title">新增會員資料</h1>
         <form action="./doInsert.php" method="POST">
             <div class="mb-3">
-                <label for="user_password" class="form-label">密碼</label>
-                <input name="user_password" type="text" class="form-control" id="user_password">
-            </div>
-            <div class="mb-3">
-                <label for="user_full_name" class="form-label">姓名</label>
+                <label for="user_full_name" class="form-label" >姓名</label>
                 <input name="user_full_name" type="text" class="form-control" id="user_full_name">
-            </div>
-            <div class="mb-3">
-                <label for="user_phone_number" class="form-label">手機</label>
-                <input name="user_phone_number" type="text" class="form-control" id="user_phone_number">
+                <span class="form-text text-danger" idn="nameErrorText"></span>
             </div>
             <div class="mb-3">
                 <label for="user_email" class="form-label">Email</label>
-                <input name="user_email" type="email" class="form-control" id="user_email">
+                <input name="user_email" type="text" class="form-control" id="user_email">
+                <span class="form-text text-danger" idn="emailErrorText"></span>
+            </div>
+            <div class="mb-3">
+                <label for="user_password" class="form-label">密碼</label>
+                <input name="user_password" type="text" class="form-control" id="user_password">
+                <span class="form-text text-danger" idn="passWordErrorText"></span>
+            </div>
+            <div class="mb-3">
+                <label for="user_phone_number" class="form-label" >手機</label>
+                <input name="user_phone_number" type="text" class="form-control" id="user_phone_number" >
+                <span class="form-text text-danger" idn="phoneErrorText"></span>
             </div>
             <div class="mb-3">
                 <!-- 下拉選單 -->
                 <label for="user_sex" class="form-label">性別</label>
-                <select name="user_sex" id="user_sex" class="form-select">
+                <select name="user_sex" id="user_sex" class="form-select" >
+                    <option value="">請選擇</option>
                     <option value="1">男性</option>
                     <option value="2">女性</option>
                 </select>
+                <span class="form-text text-danger" idn="userSexErrorText"></span>
             </div>
             <div class="mb-3">
-                <label for="" class="form-label">生日</label>
-                <input name="user_birthday" type="date" class="form-control" id="">
+                <label for="user_birthday" class="form-label" required>生日</label>
+                <input name="user_birthday" type="date" class="form-control" id="user_birthday">
+                <span class="form-text text-danger" idn="userBirthdayErrorText"></span>
             </div>
             <div class="mb-3">
                 <!-- 下拉選單 -->
                 <label for="cityId" class="form-label">居住縣市</label>
-                <select name="city_id" id="cityId" class="form-select">
+                <select name="city_id" id="cityId" class="form-select" >
+                    <option value="">請選擇</option>
                     <option value="臺北市">臺北市</option>
                     <option value="新北市">新北市</option>
                     <option value="桃園市">桃園市</option>
@@ -116,18 +124,20 @@
                     <option value="金門縣">金門縣</option>
                     <option value="連江縣">連江縣</option>
                 </select>
-                
+                <span class="form-text text-danger" idn="cityIdErrorText"></span>
             </div>
             <div class="mb-3">
                 <!-- 下拉選單 -->
-                <label for="districtId" class="form-label">行政區域</label>
-                <select name="district_id" id="districtId" class="form-select">
-                    <option>請選擇</option>
+                <label for="districtId" class="form-label" >行政區域</label>
+                <select name="district_id" id="districtId" class="form-select" >
+                    <option value="">請選擇</option>
                 </select>
+                <span class="form-text text-danger" idn="districtIdErrorText"></span>
             </div>
             <div class="mb-3">
-                <label for="" class="form-label">地址</label>
-                <input name="user_address" class="form-control" id="">
+                <label for="user_address" class="form-label">地址</label>
+                <input name="user_address" class="form-control" id="user_address" >
+                <span class="form-text text-danger" idn="userAddressErrorText"></span>
             </div>
             <!-- <div class="mb-3 form-check">
                 <span>是否為教練</span>
@@ -157,8 +167,8 @@
     <script>
         const selectCity = document.querySelector("#cityId");
         const selectDistrict = document.querySelector("[name=district_id]")
-
         const arrayDistrict =[
+            ['請選擇'],
             ['中正區', '大同區', '中山區', '萬華區', '信義區', '松山區', '大安區', '南港區', '北投區', '內湖區', '士林區', '文山區'],
             ['板橋區', '新莊區', '泰山區', '林口區', '淡水區', '金山區', '八里區', '萬里區', '石門區', '三芝區', '瑞芳區', '汐止區', '平溪區', '貢寮區', '雙溪區', '深坑區', '石碇區', '新店區', '坪林區', '烏來區', '中和區', '永和區', '土城區', '三峽區', '樹林區', '鶯歌區', '三重區', '蘆洲區', '五股區'],
             ['桃園區', '中壢區', '平鎮區', '八德區', '楊梅區', '蘆竹區', '龜山區', '龍潭區', '大溪區', '大園區', '觀音區', '新屋區', '復興區'],
@@ -195,14 +205,161 @@
         });
 
 
-        //確認是否要新增
-        const addDataButton = document.querySelector("#addDataButton");
-        addDataButton.addEventListener("click", e=>{
+        // 欄位判斷
+        const form = document.querySelector("form");
+        const userFullNameInput  = document.querySelector("#user_full_name");
+        const nameErrorText = document.querySelector("[idn=nameErrorText]")
+        const userEmail = document.querySelector("#user_email");
+        const emailErrorText = document.querySelector("[idn=emailErrorText]");
+        const userPhoneNumber = document.querySelector("#user_phone_number");
+        const phoneErrorText =document.querySelector("[idn=phoneErrorText]")
+        const userPassword = document.querySelector("#user_password");
+        const passWordErrorText =document.querySelector("[idn=passWordErrorText]");
+        const userSex = document.querySelector("#user_sex");
+        const userSexErrorText =document.querySelector("[idn=userSexErrorText]");
+        const userBirthday = document.querySelector("#user_birthday");
+        const userBirthdayErrorText =document.querySelector("[idn=userBirthdayErrorText]");
+        const cityId = document.querySelector("#cityId");
+        const cityIdErrorText =document.querySelector("[idn=cityIdErrorText]");
+        const districtId = document.querySelector("#districtId");
+        const districtIdErrorText =document.querySelector("[idn=districtIdErrorText]");
+        const userAddress = document.querySelector("#user_address");
+        const userAddressErrorText =document.querySelector("[idn=userAddressErrorText]");
+
+
+        // 動態的欄位判斷
+        userFullNameInput.addEventListener("input", e=>{
+            nameErrorText.textContent = "";
+            let isChinese = /^[\u4e00-\u9fa5]+$/;
+            if(!isChinese.test(userFullNameInput.value) || userFullNameInput.value == ""){
+                e.preventDefault();
+                nameErrorText.textContent = "請輸入中文姓名";
+            }
+        })
+
+        userEmail.addEventListener("input", e=>{
+            emailErrorText.textContent = "";
+            let emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+            if(!emailRule.test(userEmail.value) || userEmail.value == ""){
+                e.preventDefault();
+                emailErrorText.textContent = "請輸入正確的Email格式";
+            }
+        })
+
+        userPassword.addEventListener("input", e=>{
+            passWordErrorText.textContent = "";
+            let minLength = 6;
+            if(userPassword.value == "" || userPassword.value.length < minLength){
+                e.preventDefault();
+                passWordErrorText.textContent = "請輸入6位數以上的英文或數字";
+            }
+        })
+
+        userPhoneNumber.addEventListener("input", e=>{
+            phoneErrorText.textContent = "";
+            let MobileReg = /^(09)[0-9]{8}$/;
+            if (!MobileReg.test(userPhoneNumber.value) || userPhoneNumber.value == "" ){
+                e.preventDefault();
+                phoneErrorText.textContent = "請輸入正確的手機格式，為 09 開頭的 10 碼數字";
+            }
+        })
+        userAddress.addEventListener("input", e=>{
+            userAddressErrorText.textContent = "";
+            let addressPattern = /^(?=.*\d)[\u4e00-\u9fa5\d()（）]+$/;
+            if(!addressPattern.test(userAddress.value) || userAddress.value == ""){
+                    e.preventDefault();
+                    userAddressErrorText.textContent = "請輸入完整地址";
+                }
+        })
+        userSex.addEventListener("change", e=>{
+            userSexErrorText.textContent = "";
+            if(userSex.value == ""){
+                e.preventDefault();
+                userSexErrorText.textContent = "請選擇生理性別";
+            }
+        })
+        userBirthday.addEventListener("input", e=>{
+            userBirthdayErrorText.textContent = "";
+            if(userBirthday.value == ""){
+                e.preventDefault();
+                userBirthdayErrorText.textContent = "請選擇您的生日";
+            }
+        })
+        cityId.addEventListener("change", e=>{
+            cityIdErrorText.textContent = "";
+            if(cityId.value == ""){
+                e.preventDefault();
+                cityIdErrorText.textContent = "請選擇居住縣市";
+            }
+        })
+        districtId.addEventListener("change", e=>{
+            districtIdErrorText.textContent = "";
+            if(districtId.value == ""){
+                e.preventDefault();
+                districtIdErrorText.textContent = "請選擇行政區域";
+            }
+        })
+
+
+        // 提交表單後的欄位判斷
+        form.addEventListener("submit", e=>{
+            let isChinese = /^[\u4e00-\u9fa5]+$/;
+            let emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+            let minLength = 6;
+            let MobileReg = /^(09)[0-9]{8}$/;
+            let addressPattern = /^(?=.*\d)[\u4e00-\u9fa5\d()（）]+$/;
+
+            nameErrorText.textContent="";
+            emailErrorText.textContent = "";
+            passWordErrorText.textContent = "";
+            phoneErrorText.textContent = "";
+            userSexErrorText.textContent = "";
+            userBirthdayErrorText.textContent = "";
+            cityIdErrorText.textContent = "";
+            districtIdErrorText.textContent = "";
+            userAddressErrorText.textContent = "";
+            
+            if(!isChinese.test(userFullNameInput.value) || userFullNameInput.value == ""){
+                e.preventDefault();
+                nameErrorText.textContent = "請輸入中文姓名";
+            }
+            if(!emailRule.test(userEmail.value) || userEmail.value == ""){
+                e.preventDefault();
+                emailErrorText.textContent = "請輸入正確的Email格式";
+            }
+            if(userPassword.value == "" || userPassword.value.length < minLength){
+                e.preventDefault();
+                passWordErrorText.textContent = "請輸入6位數以上的英文或數字";
+            }
+            if (!MobileReg.test(userPhoneNumber.value) || userPhoneNumber.value == "" ){
+                e.preventDefault();
+                phoneErrorText.textContent = "請輸入正確的手機格式，為 09 開頭的 10 碼數字";
+            }
+            if(userSex.value == ""){
+                e.preventDefault();
+                userSexErrorText.textContent = "請選擇生理性別";
+            }
+            if(userBirthday.value == ""){
+                e.preventDefault();
+                userBirthdayErrorText.textContent = "請選擇您的生日";
+            }
+            if(cityId.value == ""){
+                e.preventDefault();
+                cityIdErrorText.textContent = "請選擇居住縣市";
+            }
+            if(districtId.value == ""){
+                e.preventDefault();
+                districtIdErrorText.textContent = "請選擇行政區域";
+            }
+            if(!addressPattern.test(userAddress.value) || userAddress.value == ""){
+                e.preventDefault();
+                userAddressErrorText.textContent = "請輸入完整地址";
+            }
+            // comfirm確定要新增的提示
             if(confirm("確認要新增這筆會員資料?") == false){
                 e.preventDefault();
             }
         })
-
     </script>
 </body>
 </html>

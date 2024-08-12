@@ -18,18 +18,18 @@ $stmtCity = $conn->prepare($sqlCity);
 $stmtDistrict = $conn->prepare($sqlDistrict);
 
 
-try{
+try {
     $stmt->execute();
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $stmtCity->execute();
     $rowsCity = $stmtCity->fetchAll(PDO::FETCH_ASSOC);
-    
+
     $stmtDistrict->execute();
     $rowsDistrict = $stmtDistrict->fetchAll(PDO::FETCH_ASSOC);
 
     $conn = NULL;
-}catch (PDOException $e) {
+} catch (PDOException $e) {
     echo "你的資料讀取失敗欸!因為:" . $e->getMessage();
     $conn = NULL;
     exit;
@@ -55,15 +55,17 @@ try{
     <title>Document</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <style>
-        .container{
+        .container {
             width: 65%;
             padding: 50px 0;
         }
-        .title{
+
+        .title {
             padding: 0 0 30px 0;
             text-align: center;
         }
-        .info-box{
+
+        .info-box {
             display: flex;
             justify-content: space-around;
             border: 1px solid black;
@@ -78,117 +80,125 @@ try{
         <h1 class="title">編輯會員資料</h1>
         <form action="./doUpdate.php" method="POST">
             <div class="info info-box">
-                <div class="mb-3">
+                <div class="mb-3 text-center">
                     <label for="" class="form-label">user ID</label>
-                    <div name="user_id" id="text" class="form-text"><?= $row["user_id"] ?></div>
+                    <div name="user_id" id="" class="form-text"><?= $row["user_id"] ?></div>
                 </div>
-                <div class="mb-3">
+                <div class="mb-3 text-center">
+                    <label for="user_email" class="form-label">Email</label>
+                    <input name="user_email" type="email" class="form-control form-control-plaintext" id="user_email" value="<?= $row["user_email"] ?>" readonly>
+                    <span class="form-text text-danger" idn="emailErrorText"></span>
+                </div>
+                <div class="mb-3 text-center">
                     <label for="" class="form-label">註冊日期</label>
                     <div id="text" class="form-text"><?= $row["user_created_at"] ?></div>
                 </div>
             </div>
             <div class="mb-3" hidden>
-                    <label for="userIdHidden" class="form-label" >user ID</label>
-                    <input name="user_id" type="text" class="form-control" id="userIdHidden" value="<?= $row["user_id"] ?>" >
-                </div>
+                <label for="userIdHidden" class="form-label">user ID</label>
+                <input name="user_id" type="text" class="form-control" id="userIdHidden" value="<?= $row["user_id"] ?>">
+            </div>
+
             <div class="mb-3">
                 <label for="user_full_name" class="form-label">姓名</label>
-                <input name="user_full_name" type="text" class="form-control" id="user_full_name" value="<?= $row["user_full_name"] ?>" >
+                <input name="user_full_name" type="text" class="form-control" id="user_full_name" value="<?= $row["user_full_name"] ?>">
+                <span class="form-text text-danger" idn="nameErrorText"></span>
             </div>
             <div class="mb-3">
                 <label for="user_phone_number" class="form-label">手機</label>
-                <input name="user_phone_number" type="text" class="form-control" id="user_phone_number" value="<?= $row["user_phone_number"] ?>" >
-            </div>
-            <div class="mb-3">
-                <label for="user_email" class="form-label">Email</label>
-                <input name="user_email" type="email" class="form-control" id="user_email" value="<?= $row["user_email"] ?>" >
+                <input name="user_phone_number" type="text" class="form-control" id="user_phone_number" value="<?= $row["user_phone_number"] ?>">
+                <span class="form-text text-danger" idn="phoneErrorText">     </span>
             </div>
             <div class="mb-3">
                 <!-- 下拉選單 -->
                 <label for="user_sex" class="form-label">性別</label>
                 <select name="user_sex" id="user_sex" class="form-select">
-                    <option value="1" <?= ($row["user_sex"]==1)? "selected": "" ?> >男性</option>
-                    <option value="2" <?= ($row["user_sex"]==2)? "selected": "" ?> >女性</option>
+                    <option value="1" <?= ($row["user_sex"] == 1) ? "selected" : "" ?>>男性</option>
+                    <option value="2" <?= ($row["user_sex"] == 2) ? "selected" : "" ?>>女性</option>
                 </select>
+                <span class="form-text text-danger" idn="userSexErrorText"></span>
             </div>
             <div class="mb-3">
-                <label for="" class="form-label">生日</label>
-                <input name="user_birthday" type="date" class="form-control" id="" value="<?= $row["user_birthday"] ?>">
+                <label for="user_birthday" class="form-label">生日</label>
+                <input name="user_birthday" type="date" class="form-control" id="user_birthday" value="<?= $row["user_birthday"] ?>">
+                <span class="form-text text-danger" idn="userBirthdayErrorText"></span>
             </div>
             <div class="mb-3">
                 <!-- 下拉選單 -->
                 <label for="cityId" class="form-label">居住縣市</label>
                 <select name="city_id" id="cityId" class="form-select">
                     <option value="" disabled> 請選擇 </option>
-                    <option value="臺北市" <?= ($row["city_id"]=="臺北市") ? "selected": "" ?>>臺北市</option>
-                    <option value="新北市" <?= ($row["city_id"]=="新北市") ? "selected": "" ?>>新北市</option>
-                    <option value="桃園市" <?= ($row["city_id"]=="桃園市") ? "selected": "" ?>>桃園市</option>
-                    <option value="臺中市" <?= ($row["city_id"]=="臺中市") ? "selected": "" ?>>臺中市</option>
-                    <option value="臺南市" <?= ($row["city_id"]=="臺南市") ? "selected": "" ?>>臺南市</option>
-                    <option value="高雄市" <?= ($row["city_id"]=="高雄市") ? "selected": "" ?>>高雄市</option>
-                    <option value="宜蘭縣" <?= ($row["city_id"]=="宜蘭縣") ? "selected": "" ?>>宜蘭縣</option>
-                    <option value="新竹縣" <?= ($row["city_id"]=="新竹縣") ? "selected": "" ?>>新竹縣</option>
-                    <option value="苗栗縣" <?= ($row["city_id"]=="苗栗縣") ? "selected": "" ?>>苗栗縣</option>
-                    <option value="彰化縣" <?= ($row["city_id"]=="彰化縣") ? "selected": "" ?>>彰化縣</option>
-                    <option value="南投縣" <?= ($row["city_id"]=="南投縣") ? "selected": "" ?>>南投縣</option>
-                    <option value="雲林縣" <?= ($row["city_id"]=="雲林縣") ? "selected": "" ?>>雲林縣</option>
-                    <option value="嘉義縣" <?= ($row["city_id"]=="嘉義縣") ? "selected": "" ?>>嘉義縣</option>
-                    <option value="屏東縣" <?= ($row["city_id"]=="屏東縣") ? "selected": "" ?>>屏東縣</option>
-                    <option value="花蓮縣" <?= ($row["city_id"]=="花蓮縣") ? "selected": "" ?>>花蓮縣</option>
-                    <option value="臺東縣" <?= ($row["city_id"]=="臺東縣") ? "selected": "" ?>>臺東縣</option>
-                    <option value="澎湖縣" <?= ($row["city_id"]=="澎湖縣") ? "selected": "" ?>>澎湖縣</option>
-                    <option value="基隆市" <?= ($row["city_id"]=="基隆市") ? "selected": "" ?>>基隆市</option>
-                    <option value="嘉義市" <?= ($row["city_id"]=="臺北市") ? "selected": "" ?>>嘉義市</option>
-                    <option value="新竹市" <?= ($row["city_id"]=="嘉義市") ? "selected": "" ?>>新竹市</option>
-                    <option value="金門縣" <?= ($row["city_id"]=="金門縣") ? "selected": "" ?>>金門縣</option>
-                    <option value="連江縣" <?= ($row["city_id"]=="連江縣") ? "selected": "" ?>>連江縣</option>
+                    <option value="臺北市" <?= ($row["city_id"] == "臺北市") ? "selected" : "" ?>>臺北市</option>
+                    <option value="新北市" <?= ($row["city_id"] == "新北市") ? "selected" : "" ?>>新北市</option>
+                    <option value="桃園市" <?= ($row["city_id"] == "桃園市") ? "selected" : "" ?>>桃園市</option>
+                    <option value="臺中市" <?= ($row["city_id"] == "臺中市") ? "selected" : "" ?>>臺中市</option>
+                    <option value="臺南市" <?= ($row["city_id"] == "臺南市") ? "selected" : "" ?>>臺南市</option>
+                    <option value="高雄市" <?= ($row["city_id"] == "高雄市") ? "selected" : "" ?>>高雄市</option>
+                    <option value="宜蘭縣" <?= ($row["city_id"] == "宜蘭縣") ? "selected" : "" ?>>宜蘭縣</option>
+                    <option value="新竹縣" <?= ($row["city_id"] == "新竹縣") ? "selected" : "" ?>>新竹縣</option>
+                    <option value="苗栗縣" <?= ($row["city_id"] == "苗栗縣") ? "selected" : "" ?>>苗栗縣</option>
+                    <option value="彰化縣" <?= ($row["city_id"] == "彰化縣") ? "selected" : "" ?>>彰化縣</option>
+                    <option value="南投縣" <?= ($row["city_id"] == "南投縣") ? "selected" : "" ?>>南投縣</option>
+                    <option value="雲林縣" <?= ($row["city_id"] == "雲林縣") ? "selected" : "" ?>>雲林縣</option>
+                    <option value="嘉義縣" <?= ($row["city_id"] == "嘉義縣") ? "selected" : "" ?>>嘉義縣</option>
+                    <option value="屏東縣" <?= ($row["city_id"] == "屏東縣") ? "selected" : "" ?>>屏東縣</option>
+                    <option value="花蓮縣" <?= ($row["city_id"] == "花蓮縣") ? "selected" : "" ?>>花蓮縣</option>
+                    <option value="臺東縣" <?= ($row["city_id"] == "臺東縣") ? "selected" : "" ?>>臺東縣</option>
+                    <option value="澎湖縣" <?= ($row["city_id"] == "澎湖縣") ? "selected" : "" ?>>澎湖縣</option>
+                    <option value="基隆市" <?= ($row["city_id"] == "基隆市") ? "selected" : "" ?>>基隆市</option>
+                    <option value="嘉義市" <?= ($row["city_id"] == "臺北市") ? "selected" : "" ?>>嘉義市</option>
+                    <option value="新竹市" <?= ($row["city_id"] == "嘉義市") ? "selected" : "" ?>>新竹市</option>
+                    <option value="金門縣" <?= ($row["city_id"] == "金門縣") ? "selected" : "" ?>>金門縣</option>
+                    <option value="連江縣" <?= ($row["city_id"] == "連江縣") ? "selected" : "" ?>>連江縣</option>
                 </select>
-                
+                <span class="form-text text-danger" idn="cityIdErrorText"></span>
             </div>
             <div class="mb-3">
                 <!-- 下拉選單 -->
                 <label for="districtId" class="form-label">行政區域</label>
                 <select name="district_id" id="districtId" class="form-select">
-
-                    <option value=""> <?= $row["district_id"] ?> </option>
-
+                    <option value="<?= $row["district_id"] ?>"> <?= $row["district_id"] ?> </option>
                 </select>
+                <span class="form-text text-danger" idn="districtIdErrorText"></span>
             </div>
             <div class="mb-3">
-                <label for="" class="form-label">地址</label>
-                <input name="user_address" class="form-control" id="" value="<?= $row["user_address"] ?>">
+                <label for="user_address" class="form-label">地址</label>
+                <input name="user_address" class="form-control" id="user_address" value="<?= $row["user_address"] ?>">
+                <span class="form-text text-danger" idn="userAddressErrorText"></span>
             </div>
             <div class="mb-3 form-check">
                 <!-- 單選 -->
                 <span>是否為教練</span>
                 <div>
-                    <input type="radio" name="role_id" id="exampleCheck1" class="form-check-input" value="1" <?= ($row["role_id"]==1)?"checked":"" ?> >
-                    <label class="form-check-label" for="exampleCheck1" >是</label>
+                    <input type="radio" name="role_id" id="exampleCheck1" class="form-check-input" value="1" <?= ($row["role_id"] == 1) ? "checked" : "" ?>>
+                    <label class="form-check-label" for="exampleCheck1">是</label>
                 </div>
                 <div>
-                    <input type="radio" name="role_id" class="form-check-input" id="exampleCheck2" value="0" <?= ($row["role_id"]==0)?"checked":"" ?> >
-                    <label class="form-check-label" for="exampleCheck2" >否</label>
+                    <input type="radio" name="role_id" class="form-check-input" id="exampleCheck2" value="0" <?= ($row["role_id"] == 0) ? "checked" : "" ?>>
+                    <label class="form-check-label" for="exampleCheck2">否</label>
                 </div>
             </div>
             <div class="mb-3 form-check">
                 <!-- 單選 -->
                 <span>Email驗證</span>
                 <div>
-                    <input type="radio" class="form-check-input" id="exampleCheck3" value="1" name="is_active"  <?= ($row["is_active"]==1)?"checked":"" ?>>
+                    <input type="radio" class="form-check-input" id="exampleCheck3" value="1" name="is_active" <?= ($row["is_active"] == 1) ? "checked" : "" ?>>
                     <label class="form-check-label" for="exampleCheck3">已完成驗證</label>
                 </div>
                 <div>
-                    <input type="radio" class="form-check-input" id="exampleCheck4" value="0" name="is_active"  <?= ($row["is_active"]==0)?"checked":"" ?>>
+                    <input type="radio" class="form-check-input" id="exampleCheck4" value="0" name="is_active" <?= ($row["is_active"] == 0) ? "checked" : "" ?>>
                     <label class="form-check-label" for="exampleCheck4">未通過驗證</label>
                 </div>
             </div>
             <button type="submit" class="btn btn-primary" id="modifyConfirmButton">送出</button>
         </form>
     </div>
-    <SCript>
+
+    <script>
         const selectCity = document.querySelector("#cityId");
         const selectDistrict = document.querySelector("[name=district_id]")
-        const arrayDistrict =[
+        const arrayDistrict = [
+            [],
             ['中正區', '大同區', '中山區', '萬華區', '信義區', '松山區', '大安區', '南港區', '北投區', '內湖區', '士林區', '文山區'],
             ['板橋區', '新莊區', '泰山區', '林口區', '淡水區', '金山區', '八里區', '萬里區', '石門區', '三芝區', '瑞芳區', '汐止區', '平溪區', '貢寮區', '雙溪區', '深坑區', '石碇區', '新店區', '坪林區', '烏來區', '中和區', '永和區', '土城區', '三峽區', '樹林區', '鶯歌區', '三重區', '蘆洲區', '五股區'],
             ['桃園區', '中壢區', '平鎮區', '八德區', '楊梅區', '蘆竹區', '龜山區', '龍潭區', '大溪區', '大園區', '觀音區', '新屋區', '復興區'],
@@ -213,28 +223,157 @@ try{
             ['南竿鄉', '北竿鄉', '莒光鄉', '東引鄉']
         ];
 
-        selectCity.addEventListener("change", function(){
+        selectCity.addEventListener("change", function() {
             console.log(arrayDistrict[selectCity.selectedIndex])
             selectDistrict.innerHTML = "";
-            arrayDistrict[selectCity.selectedIndex].forEach(v =>{
+            arrayDistrict[selectCity.selectedIndex].forEach(v => {
                 const node = document.createElement("option")
                 node.innerHTML = v;
                 selectDistrict.append(node);
             })
         });
 
-        // comfirm確定要修改
-        const modifyConfirmButton = document.querySelector("#modifyConfirmButton");
-        modifyConfirmButton.addEventListener("click", e=>{
-            if(confirm("確定要修改?") == false){
+
+        // 欄位判斷
+        const form = document.querySelector("form");
+        const userFullNameInput = document.querySelector("#user_full_name");
+        const nameErrorText = document.querySelector("[idn=nameErrorText]")
+        const userEmail = document.querySelector("#user_email");
+        const emailErrorText = document.querySelector("[idn=emailErrorText]");
+        const userPhoneNumber = document.querySelector("#user_phone_number");
+        const phoneErrorText = document.querySelector("[idn=phoneErrorText]")
+        const userSex = document.querySelector("#user_sex");
+        const userSexErrorText = document.querySelector("[idn=userSexErrorText]");
+        const userBirthday = document.querySelector("#user_birthday");
+        const userBirthdayErrorText = document.querySelector("[idn=userBirthdayErrorText]");
+        const cityId = document.querySelector("#cityId");
+        const cityIdErrorText = document.querySelector("[idn=cityIdErrorText]");
+        const districtId = document.querySelector("#districtId");
+        const districtIdErrorText = document.querySelector("[idn=districtIdErrorText]");
+        const userAddress = document.querySelector("#user_address");
+        const userAddressErrorText = document.querySelector("[idn=userAddressErrorText]");
+
+
+        // 動態的欄位判斷
+        userFullNameInput.addEventListener("input", e => {
+            nameErrorText.textContent = "";
+            let isChinese = /^[\u4e00-\u9fa5]+$/;
+            if (!isChinese.test(userFullNameInput.value) || userFullNameInput.value == "") {
                 e.preventDefault();
-            }else{
-                e.target.form.submit(); // 提交表單
-                }
-                
+                nameErrorText.textContent = "請輸入中文姓名";
+            }
         })
-        
-    </SCript>
+
+        userEmail.addEventListener("input", e => {
+            emailErrorText.textContent = "";
+            let emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+            if (!emailRule.test(userEmail.value) || userEmail.value == "") {
+                e.preventDefault();
+                emailErrorText.textContent = "請輸入正確的Email格式";
+            }
+        })
+
+        userPhoneNumber.addEventListener("input", e => {
+            phoneErrorText.textContent = "";
+            let MobileReg = /^(09)[0-9]{8}$/;
+            if (!MobileReg.test(userPhoneNumber.value) || userPhoneNumber.value == "") {
+                e.preventDefault();
+                phoneErrorText.textContent = "請輸入正確的手機格式，為 09 開頭的 10 碼數字";
+            }
+        })
+        userAddress.addEventListener("input", e => {
+            userAddressErrorText.textContent = "";
+            let addressPattern = /^(?=.*\d)[\u4e00-\u9fa5\d()（）]+$/;
+            if (!addressPattern.test(userAddress.value) || userAddress.value == "") {
+                e.preventDefault();
+                userAddressErrorText.textContent = "請輸入完整地址";
+            }
+        })
+        userSex.addEventListener("change", e => {
+            userSexErrorText.textContent = "";
+            if (userSex.value == "") {
+                e.preventDefault();
+                userSexErrorText.textContent = "請選擇生理性別";
+            }
+        })
+        userBirthday.addEventListener("input", e => {
+            userBirthdayErrorText.textContent = "";
+            if (userBirthday.value == "") {
+                e.preventDefault();
+                userBirthdayErrorText.textContent = "請選擇您的生日";
+            }
+        })
+        cityId.addEventListener("change", e => {
+            cityIdErrorText.textContent = "";
+            if (cityId.value == "") {
+                e.preventDefault();
+                cityIdErrorText.textContent = "請選擇居住縣市";
+            }
+        })
+        districtId.addEventListener("change", e => {
+            districtIdErrorText.textContent = "";
+            if (districtId.value == "") {
+                e.preventDefault();
+                districtIdErrorText.textContent = "請選擇行政區域";
+            }
+        })
+
+
+        // 提交表單後的欄位判斷
+        form.addEventListener("submit", e => {
+            let isChinese = /^[\u4e00-\u9fa5]+$/;
+            let emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+            let minLength = 6;
+            let MobileReg = /^(09)[0-9]{8}$/;
+            let addressPattern = /^(?=.*\d)[\u4e00-\u9fa5\d()（）]+$/;
+
+            nameErrorText.textContent = "";
+            emailErrorText.textContent = "";
+            phoneErrorText.textContent = "";
+            userSexErrorText.textContent = "";
+            userBirthdayErrorText.textContent = "";
+            cityIdErrorText.textContent = "";
+            districtIdErrorText.textContent = "";
+            userAddressErrorText.textContent = "";
+
+            if (!isChinese.test(userFullNameInput.value) || userFullNameInput.value == "") {
+                e.preventDefault();
+                nameErrorText.textContent = "請輸入中文姓名";
+            }
+            if (!emailRule.test(userEmail.value) || userEmail.value == "") {
+                e.preventDefault();
+                emailErrorText.textContent = "請輸入正確的Email格式";
+            }
+            if (!MobileReg.test(userPhoneNumber.value) || userPhoneNumber.value == "") {
+                e.preventDefault();
+                phoneErrorText.textContent = "請輸入正確的手機格式，為 09 開頭的 10 碼數字";
+            }
+            if (userSex.value == "") {
+                e.preventDefault();
+                userSexErrorText.textContent = "請選擇生理性別";
+            }
+            if (userBirthday.value == "") {
+                e.preventDefault();
+                userBirthdayErrorText.textContent = "請選擇您的生日";
+            }
+            if (cityId.value == "") {
+                e.preventDefault();
+                cityIdErrorText.textContent = "請選擇居住縣市";
+            }
+            if (districtId.value == "") {
+                e.preventDefault();
+                districtIdErrorText.textContent = "請選擇行政區域";
+            }
+            if (!addressPattern.test(userAddress.value) || userAddress.value == "") {
+                e.preventDefault();
+                userAddressErrorText.textContent = "請輸入完整地址";
+            }
+            // comfirm確定要新增的提示
+            if (confirm("確認要新增這筆會員資料?") == false) {
+                e.preventDefault();
+            }
+        })
+    </script>
 </body>
 
 </html>

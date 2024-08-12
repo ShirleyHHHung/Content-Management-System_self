@@ -26,7 +26,6 @@ $searchType = isset($_GET["stype"]) ? $_GET["stype"] : "";
 $searchText = isset($_GET["search"]) ? $_GET["search"] : "";
 $sqlSearch = ($searchType && $searchText) ? "`$searchType` LIKE '%$searchText%' AND " : "";
 
-// 封鎖名單
 
 
 // SQL語法
