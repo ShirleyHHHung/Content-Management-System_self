@@ -12,12 +12,12 @@ $pageStart = ($page - 1) * $perPage;
 
 // 設定是否已驗證，2是全部，1是已驗證，0是未驗證，6是封鎖
 $cid = isset($_GET["cid"]) ? (int)$_GET["cid"] : 2;
-if ($cid == 2){
+if ($cid == 2) {
     $cidSql = "`user_valid` = 1 AND";
-} elseif($cid == 3){
+} elseif ($cid == 3) {
     $cidSql = "`user_valid` = 0 AND";
-}else{
-    $cidSql = "`is_active` = $cid AND `user_valid` = 1 AND " ;
+} else {
+    $cidSql = "`is_active` = $cid AND `user_valid` = 1 AND ";
 }
 
 
@@ -152,14 +152,14 @@ echo "</pre>";
                             <td><?= $row["user_email"] ?></td>
                             <td><?= $row["user_phone_number"] ?></td>
                             <!-- <td><?= $row["user_birthday"] ?></td> -->
-                            <td><?= ($row["is_active"]==1)?"完成":"等待驗證" ?></td>
+                            <td><?= ($row["is_active"] == 1) ? "完成" : "等待驗證" ?></td>
                             <td><?= $row["city_id"] ?></td>
                             <td>
-                                <a class="delete-button" idn="<?= (int)$row["user_id"]?>">
-                                    <button class="btn btn-danger">封鎖</button>
+                                <a class="delete-button" idn="<?= (int)$row["user_id"] ?>">
+                                    <button class="btn btn-danger" idn="blockButtonText"></button>
                                 </a>
                                 <a href="./pageMsg.php?id=<?= (int)$row["user_id"] ?>">
-                                    <button class="btn btn-warning" >修改</button>
+                                    <button class="btn btn-warning">修改</button>
                                 </a>
                             </td>
                         </tr>
@@ -174,7 +174,7 @@ echo "</pre>";
                 </ul>
             </nav>
             <a href="./pageAdd.php?>">
-                <button class="btn btn-warning" >新增一筆</button>
+                <button class="btn btn-warning">新增一筆</button>
             </a>
         </div>
 
@@ -194,16 +194,28 @@ echo "</pre>";
                 }
             })
 
-            let deleteButton = document.querySelectorAll(".delete-button");
-            deleteButton.forEach(function(btn){
-                btn.addEventListener("click", function(e){
-                if(confirm("確定要封鎖?") == true){
-                    window.location.href = "./doDelete.php?id="+this.getAttribute("idn");
+            // 在cid=3時按鈕文字顯示[截除封鎖]
+            let url = new URL(window.location.href);
+            let cidNum = url.searchParams.get("cid");
+
+            document.querySelectorAll("[idn=blockButtonText]").forEach( e => {
+                if (cidNum == 3) {
+                    e.textContent = "解除封鎖";
+                } else {
+                    e.textContent = "封鎖";
                 }
             })
-            })
 
-            
+
+            // 按下軟刪除按鈕；跳出通知及轉跳
+            let deleteButton = document.querySelectorAll(".delete-button");
+            deleteButton.forEach(function(btn) {
+                btn.addEventListener("click", function(e) {
+                    if (confirm("確定要執行嗎?") == true) {
+                        window.location.href = "./doDelete.php?id=" + this.getAttribute("idn") +"&cid=" + cidNum;
+                    }
+                })
+            })
         </script>
 </body>
 

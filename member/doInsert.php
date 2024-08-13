@@ -27,10 +27,10 @@ $userAddress = $_POST["user_address"];
 $sqlEmailCount = "SELECT COUNT(*) as total FROM `user` WHERE `user_email` = '$userEmail';";
 
 $stmtEmailCount = $conn->prepare($sqlEmailCount);
+
 try{
     $stmtEmailCount->execute();
     $totalEmailCount = $stmtEmailCount->fetch(PDO::FETCH_ASSOC)['total'];
-    $conn = NULL;
 }catch (PDOException $e) {
     echo "你的資料讀取失敗欸!因為:" . $e->getMessage();
     exit;

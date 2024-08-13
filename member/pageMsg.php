@@ -97,6 +97,10 @@ try {
                 <label for="userIdHidden" class="form-label">user ID</label>
                 <input name="user_id" type="text" class="form-control" id="userIdHidden" value="<?= $row["user_id"] ?>">
             </div>
+            <div class="mb-3 text-center" hidden>
+                <label for="user_emailHidden" class="form-label">Email</label>
+                <input name="user_email" type="text" class="form-control" id="user_emailHidden" value="<?= $row["user_email"] ?>">
+            </div>
 
             <div class="mb-3">
                 <label for="user_full_name" class="form-label">姓名</label>
@@ -106,7 +110,7 @@ try {
             <div class="mb-3">
                 <label for="user_phone_number" class="form-label">手機</label>
                 <input name="user_phone_number" type="text" class="form-control" id="user_phone_number" value="<?= $row["user_phone_number"] ?>">
-                <span class="form-text text-danger" idn="phoneErrorText">     </span>
+                <span class="form-text text-danger" idn="phoneErrorText"></span>
             </div>
             <div class="mb-3">
                 <!-- 下拉選單 -->
