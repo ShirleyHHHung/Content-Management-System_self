@@ -97,10 +97,10 @@ try {
                 <label for="userIdHidden" class="form-label">user ID</label>
                 <input name="user_id" type="text" class="form-control" id="userIdHidden" value="<?= $row["user_id"] ?>">
             </div>
-            <div class="mb-3 text-center" hidden>
+            <!-- <div class="mb-3 text-center" hidden>
                 <label for="user_emailHidden" class="form-label">Email</label>
                 <input name="user_email" type="text" class="form-control" id="user_emailHidden" value="<?= $row["user_email"] ?>">
-            </div>
+            </div> -->
 
             <div class="mb-3">
                 <label for="user_full_name" class="form-label">姓名</label>
@@ -172,25 +172,25 @@ try {
             <div class="mb-3 form-check">
                 <!-- 單選 -->
                 <span>是否為教練</span>
-                <div>
-                    <input type="radio" name="role_id" id="exampleCheck1" class="form-check-input" value="1" <?= ($row["role_id"] == 1) ? "checked" : "" ?>>
-                    <label class="form-check-label" for="exampleCheck1">是</label>
+                <div class="form-check form-check-inline">
+                    <input type="radio" name="role_id" id="exampleCheck1" class="btn-check" value="1" <?= ($row["role_id"] == 1) ? "checked" : "" ?>>
+                    <label class="btn btn-outline-danger" for="exampleCheck1">是</label>
                 </div>
-                <div>
-                    <input type="radio" name="role_id" class="form-check-input" id="exampleCheck2" value="0" <?= ($row["role_id"] == 0) ? "checked" : "" ?>>
-                    <label class="form-check-label" for="exampleCheck2">否</label>
+                <div class="form-check form-check-inline">
+                    <input type="radio" name="role_id" class="btn-check" id="exampleCheck2" value="0" <?= ($row["role_id"] == 0) ? "checked" : "" ?>>
+                    <label class="btn btn-outline-danger" for="exampleCheck2">否</label>
                 </div>
             </div>
             <div class="mb-3 form-check">
                 <!-- 單選 -->
                 <span>Email驗證</span>
-                <div>
-                    <input type="radio" class="form-check-input" id="exampleCheck3" value="1" name="is_active" <?= ($row["is_active"] == 1) ? "checked" : "" ?>>
-                    <label class="form-check-label" for="exampleCheck3">已完成驗證</label>
+                <div class="form-check form-check-inline">
+                    <input type="radio" class="btn-check" id="exampleCheck3" value="1" name="is_active" <?= ($row["is_active"] == 1) ? "checked" : "" ?>>
+                    <label class="btn btn-outline-danger" for="exampleCheck3">已完成驗證</label>
                 </div>
-                <div>
-                    <input type="radio" class="form-check-input" id="exampleCheck4" value="0" name="is_active" <?= ($row["is_active"] == 0) ? "checked" : "" ?>>
-                    <label class="form-check-label" for="exampleCheck4">未通過驗證</label>
+                <div class="form-check form-check-inline">
+                    <input type="radio" class="btn-check" id="exampleCheck4" value="0" name="is_active" <?= ($row["is_active"] == 0) ? "checked" : "" ?>>
+                    <label class="btn btn-outline-danger" for="exampleCheck4">未通過驗證</label>
                 </div>
             </div>
             <button type="submit" class="btn btn-primary" id="modifyConfirmButton">送出</button>
@@ -241,8 +241,8 @@ try {
         const form = document.querySelector("form");
         const userFullNameInput = document.querySelector("#user_full_name");
         const nameErrorText = document.querySelector("[idn=nameErrorText]")
-        const userEmail = document.querySelector("#user_email");
-        const emailErrorText = document.querySelector("[idn=emailErrorText]");
+        // const userEmail = document.querySelector("#user_email");
+        // const emailErrorText = document.querySelector("[idn=emailErrorText]");
         const userPhoneNumber = document.querySelector("#user_phone_number");
         const phoneErrorText = document.querySelector("[idn=phoneErrorText]")
         const userSex = document.querySelector("#user_sex");
@@ -267,14 +267,14 @@ try {
             }
         })
 
-        userEmail.addEventListener("input", e => {
-            emailErrorText.textContent = "";
-            let emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
-            if (!emailRule.test(userEmail.value) || userEmail.value == "") {
-                e.preventDefault();
-                emailErrorText.textContent = "請輸入正確的Email格式";
-            }
-        })
+        // userEmail.addEventListener("input", e => {
+        //     emailErrorText.textContent = "";
+        //     let emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+        //     if (!emailRule.test(userEmail.value) || userEmail.value == "") {
+        //         e.preventDefault();
+        //         emailErrorText.textContent = "請輸入正確的Email格式";
+        //     }
+        // })
 
         userPhoneNumber.addEventListener("input", e => {
             phoneErrorText.textContent = "";
@@ -331,7 +331,7 @@ try {
             let addressPattern = /^(?=.*\d)[\u4e00-\u9fa5\d()（）]+$/;
 
             nameErrorText.textContent = "";
-            emailErrorText.textContent = "";
+            // emailErrorText.textContent = "";
             phoneErrorText.textContent = "";
             userSexErrorText.textContent = "";
             userBirthdayErrorText.textContent = "";
@@ -343,10 +343,10 @@ try {
                 e.preventDefault();
                 nameErrorText.textContent = "請輸入中文姓名";
             }
-            if (!emailRule.test(userEmail.value) || userEmail.value == "") {
-                e.preventDefault();
-                emailErrorText.textContent = "請輸入正確的Email格式";
-            }
+            // if (!emailRule.test(userEmail.value) || userEmail.value == "") {
+            //     e.preventDefault();
+            //     emailErrorText.textContent = "請輸入正確的Email格式";
+            // }
             if (!MobileReg.test(userPhoneNumber.value) || userPhoneNumber.value == "") {
                 e.preventDefault();
                 phoneErrorText.textContent = "請輸入正確的手機格式，為 09 開頭的 10 碼數字";

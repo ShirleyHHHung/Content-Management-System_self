@@ -10,7 +10,7 @@ $pageStart = ($page - 1) * $perPage;
 
 
 
-// 設定是否已驗證，2是全部，1是已驗證，0是未驗證，6是封鎖
+// 設定是否已驗證，2是全部，1是已驗證，0是未驗證，3是封鎖
 $cid = isset($_GET["cid"]) ? (int)$_GET["cid"] : 2;
 if ($cid == 2) {
     $cidSql = "`user_valid` = 1 AND";
@@ -122,7 +122,7 @@ echo "</pre>";
                     <li class="nav-item">
                         <a class="nav-link tag0 <?= $cid === 0 ? 'active' : '' ?>" aria-current="page" href="./index.php?cid=0<?= "&page=1" ?>">未驗證</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item ms-auto">
                         <a class="nav-link tag0 <?= $cid === 3 ? 'active' : '' ?>" aria-current="page" href="./index.php?cid=3<?= "&page=1" ?>">封鎖</a>
                     </li>
                 </ul>
