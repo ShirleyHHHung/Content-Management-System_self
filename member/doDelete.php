@@ -10,8 +10,10 @@ if($_POST["user_full_name"] == ""){
     exit;
 }
 
-
 $userId = $_GET["id"];
+
+
+
 
 $sql = "UPDATE `user` SET `user_valid` = '0' WHERE `user_id` = $userId";
 

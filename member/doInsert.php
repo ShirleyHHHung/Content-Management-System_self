@@ -23,6 +23,23 @@ $districtId = $_POST["district_id"];
 $userAddress = $_POST["user_address"];
 
 
+// 檢查Email(帳號)是否註冊過
+$sqlEmailCount = "SELECT COUNT(*) as total FROM `user` WHERE `user_email` = '$userEmail';";
+
+$stmtEmailCount = $conn->prepare($sqlEmailCount);
+try{
+    $stmtEmailCount->execute();
+    $totalEmailCount = $stmtEmailCount->fetch(PDO::FETCH_ASSOC)['total'];
+    $conn = NULL;
+}catch (PDOException $e) {
+    echo "你的資料讀取失敗欸!因為:" . $e->getMessage();
+    exit;
+}
+
+if ($totalEmailCount > 0){
+    echo "<script type='text/javascript'>alert('這組帳號已經註冊過了');</script>";
+    echo "<script type='text/javascript'>window.location.href = './index.php '; </script>";
+}
 
 
 // 資料庫語法
