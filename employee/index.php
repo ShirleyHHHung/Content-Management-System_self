@@ -181,9 +181,9 @@ try {
                 </ul>
             </nav>
 
-            <!-- <a href="./pageAdd.php?>">
+            <a href="./pageAdd.php?">
                 <button class="btn btn-warning">新增一筆</button>
-            </a> -->
+            </a>
 
         </div>
 

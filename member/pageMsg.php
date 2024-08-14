@@ -19,9 +19,11 @@ $stmtDistrict = $conn->prepare($sqlDistrict);
 
 
 try {
-    $stmt->execute();
+    $stmt->execute([
+        // ":userID" => $userID,
+    ]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
+    
     $stmtCity->execute();
     $rowsCity = $stmtCity->fetchAll(PDO::FETCH_ASSOC);
 
@@ -35,12 +37,6 @@ try {
     exit;
 }
 
-
-// 將行政區域數據按照 city_id 分組
-// $districtsByCity = [];
-// foreach ($rowsDistrict as $rowDistrict) {
-//     $districtsByCity[$rowDistrict['city_id']][] = $rowDistrict;
-// }
 
 ?>
 
@@ -372,7 +368,7 @@ try {
                 userAddressErrorText.textContent = "請輸入完整地址";
             }
             // comfirm確定要新增的提示
-            if (confirm("確認要新增這筆會員資料?") == false) {
+            if (confirm("確認要更新這筆會員資料?") == false) {
                 e.preventDefault();
             }
         })

@@ -29,7 +29,7 @@ $sqlSearch = ($searchType && $searchText) ? "`$searchType` LIKE '%$searchText%' 
 
 
 // SQL語法
-$sql = "SELECT * FROM `user` where $cidSql $sqlSearch `user_created_at` < NOW() LIMIT $pageStart, $perPage;";
+$sql = "SELECT * FROM `user` where $cidSql $sqlSearch `user_created_at` < NOW() LIMIT $pageStart, $perPage";
 $sqlCity = "SELECT * FROM `city`;";
 $sqlCount = "SELECT COUNT(*) as total FROM user WHERE $cidSql $sqlSearch `user_created_at` < NOW();";
 // 計算總數的SQL，AS total 為查詢結果中的計數欄位起了一個名稱 total
@@ -42,11 +42,21 @@ $stmtCount = $conn->prepare($sqlCount);
 
 
 try {
-    $stmtCount->execute();
+    $stmtCount->execute([
+        // ":cid" => $cid,
+        // ":searchType" => $searchType,
+        // ":searchText" => $searchText,
+    ]);
     $totalCount = $stmtCount->fetch(PDO::FETCH_ASSOC)['total'];
     $totalPage = ceil($totalCount / $perPage);
 
-    $stmt->execute();
+    $stmt->execute([
+        // ":searchType" => $searchType,
+        // ":searchText" => $searchText,
+        // ":cid" => $cid,
+        // ":pageStart" => $pageStart,
+        // ":perPage" => $perPage,
+    ]);
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     $stmtCity->execute();
