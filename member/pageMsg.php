@@ -23,7 +23,7 @@ try {
         // ":userID" => $userID,
     ]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    
+
     $stmtCity->execute();
     $rowsCity = $stmtCity->fetchAll(PDO::FETCH_ASSOC);
 
@@ -50,16 +50,23 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Castoro:ital@0;1&family=Noto+Sans+TC:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/customBS.css" />
+    <link rel="stylesheet" href="../css/pageDashboard3.css" />
     <style>
-        .container {
-            width: 65%;
-            padding: 50px 0;
-        }
 
-        .title {
-            padding: 0 0 30px 0;
-            text-align: center;
-        }
 
         .info-box {
             display: flex;
@@ -67,28 +74,159 @@ try {
             border: 1px solid black;
             margin-bottom: 30px;
             padding: 15px 0 5px 0;
+            width: 500px;
         }
     </style>
 </head>
 
-<body>
-    <div class="container">
-        <h1 class="title">編輯會員資料</h1>
-        <form action="./doUpdate.php" method="POST">
-            <div class="info info-box">
-                <div class="mb-3 text-center">
-                    <label for="" class="form-label">user ID</label>
-                    <div name="user_id" id="" class="form-text"><?= $row["user_id"] ?></div>
-                </div>
-                <div class="mb-3 text-center">
-                    <label for="user_email" class="form-label">Email</label>
-                    <div name="user_email" class="form-text"><?= $row["user_email"] ?></div>
-                </div>
-                <div class="mb-3 text-center">
-                    <label for="" class="form-label">註冊日期</label>
-                    <div id="text" class="form-text"><?= $row["user_created_at"] ?></div>
-                </div>
+<body class="bg-three d-flex">
+  
+  <nav class="d-flex sticky-top h100vh rounded-end-4">
+    <!-- 綠色欄位 -->
+    <div class="w280px h-100 bg-one position-relative rounded-end-5">
+      <div
+      class="green-area-icon h-100 w80px d-flex flex-column align-items-center"
+      >
+      <!-- 在自己的<div>上加2個class: bg-white shadow -->
+       <!-- 將<i>上的原本的class: text-white 改成 text-one -->
+      <!-- 會員 -->
+        <div
+          class="bg-white shadow menu-btn mt-4 w50px h50px d-flex justify-content-center align-items-center rounded-4 mb-3 btn1 "
+        >
+          <a href="../member/index.php"
+            ><i class="fa-solid fa-user-group text-one fs-4"></i></a>
+        </div>
+        <!-- 商品 -->
+        <div
+          class="menu-btn w50px h50px d-flex justify-content-center align-items-center rounded-4 mb-3 btn2"
+        >
+          <a href="../product/index.php"><i class="fa-solid fa-store text-white fs-4"></i></a>
+        </div>
+        <!-- 課程 -->
+        <div
+          class="menu-btn w50px h50px d-flex justify-content-center align-items-center rounded-4 mb-3 btn3"
+        >
+          <a href="../lesson/index.php"
+            ><i class="fa-regular fa-calendar text-white fs-4"></i
+          ></a>
+        </div>
+        <!-- 部落格 -->
+        <div
+          class="menu-btn w50px h50px d-flex justify-content-center align-items-center rounded-4 mb-3 btn4"
+        >
+          <a href="../blog/blogs.php"><i class="fa-brands fa-blogger text-white fs-4"></i></a>
+        </div>
+        <!-- 潛點地圖 -->
+        <div
+          class="menu-btn w50px h50px d-flex justify-content-center align-items-center rounded-4 mb-3 btn5"
+        >
+          <a href="../DSite/dsList.php"><i class="fa-regular fa-map text-white fs-4"></i></a>
+        </div>
+        <!-- 媒體庫 -->
+        <div
+          class="menu-btn w50px h50px d-flex justify-content-center align-items-center rounded-4 mb-3 btn6"
+        >
+          <a href="../media/mediaLibrary.php"><i class="fa-regular fa-image text-white fs-4"></i></a>
+        </div>
+        <!-- 員工 -->
+        <div
+          class="menu-btn w50px h50px d-flex justify-content-center align-items-center rounded-4 mb-2 mt-auto btn7"
+        >
+          <a href="../employee/index.php"
+            ><i class="fa-solid fa-address-card text-white fs-5"></i
+          ></a>
+        </div>
+        <div
+          class="w50px h50px d-flex justify-content-center align-items-center rounded-4 mb-4"
+        >
+          <a href="#"
+            ><i class="fa-solid fa-right-from-bracket text-white fs-5"></i
+          ></a>
+        </div>
+      </div>
+    </div>
+    <!-- 白色欄位 -->
+    <div
+      class="w200px h-100 d-flex flex-column justify-content-center bg-white card rounded-4 position-absolute white-area"
+    >
+      <!-- logo區 -->
+      <div class="logobox container my-5 d-flex justify-content-center">
+        <img
+          src="../84901e5e1a173e3324e4ba59bf3b9b9f.png"
+          alt=""
+          class="logo"
+        />
+      </div>
+      <!-- 新增按鈕，在a上放自己新增一筆的連結 -->
+      <div class="addBtnBox container text-center mb-5 mt-4">
+        <a href="./pageAdd.php">
+          <button class="btn btn-one"><i class="fa-solid fa-square-plus"></i><span class="px-3">create new</span>
+          </button>
+        </a>
+      </div>
+      <!-- 目錄區(手風琴) -->
+      <div>
+        <div cla>
+          <div class="accordion-title">
+            <!-- 放上icon跟分類名稱 -->
+            <button class="accordion-button text-one ms-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"><span class="menu-icon"><i class="fa-solid fa-user-group text-one fs-5"></i></span><span class="menu-title">會員管理</span></button>
+          </div>
+          <div>
+            <div class="accordion-body mt-3">
+              <!-- 放上子項目名稱&連結 -->
+              <li class="list-a"><a href="#######" class="ms-1">會員列表</a></li>
             </div>
+          </div>
+        </div>
+      </div>
+      <!-- 其他功能 -->
+      <div class="container mb-3 mt-auto ms-4">
+        <div class="ps-3 text-four">
+          <i class="fa-solid fa-share-nodes"></i>
+          <span class="ps-2">share</span>
+        </div>
+      </div>
+      <div class="container mb-3 ms-4">
+        <div class="ps-3 text-four">
+          <i class="fa-solid fa-clock"></i>
+          <span class="ps-2">recent</span>
+        </div>
+      </div>
+      <div class="container mb-3 ms-4">
+        <div class="ps-3 text-four">
+          <i class="fa-solid fa-star"></i>
+          <span class="ps-2">favorite</span>
+        </div>
+      </div>
+      <div class="container mb-5 ms-4">
+        <div class="ps-3 text-four">
+          <i class="fa-solid fa-trash-can"></i>
+          <span class="ps-2">delete</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+    <div class="container">
+      <div class="d-flex justify-content-between ">
+        <h1 class="my-5 text-one">編輯會員資料</h1>
+        <div class="info info-box bg-one rounded-2 text-light align-self-end">
+            <div class="mb-3 text-center">
+                <label for="" class="form-label">user ID</label>
+                <div name="user_id" id="" class="text-light" ><?= $row["user_id"] ?></div>
+            </div>
+            <div class="mb-3 text-center">
+                <label for="user_email" class="form-label">Email</label>
+                <div name="user_email" class="text-light"><?= $row["user_email"] ?></div>
+            </div>
+            <div class="mb-3 text-center">
+                <label for="" class="form-label">註冊日期</label>
+                <div id="text" class="text-light"><?= $row["user_created_at"] ?></div>
+            </div>
+        </div>
+      </div>
+        <form action="./doUpdate.php" method="POST">
             <div class="mb-3" hidden>
                 <label for="userIdHidden" class="form-label">user ID</label>
                 <input name="user_id" type="text" class="form-control" id="userIdHidden" value="<?= $row["user_id"] ?>">
@@ -98,33 +236,33 @@ try {
                 <input name="user_email" type="text" class="form-control" id="user_emailHidden" value="<?= $row["user_email"] ?>">
             </div> -->
 
-            <div class="mb-3">
-                <label for="user_full_name" class="form-label">姓名</label>
+            <div class="input-group mb-3">
+                <label for="user_full_name" class="input-group-text">姓名</label>
                 <input name="user_full_name" type="text" class="form-control" id="user_full_name" value="<?= $row["user_full_name"] ?>">
                 <span class="form-text text-danger" idn="nameErrorText"></span>
             </div>
-            <div class="mb-3">
-                <label for="user_phone_number" class="form-label">手機</label>
+            <div class="input-group mb-3">
+                <label for="user_phone_number" class="input-group-text">手機</label>
                 <input name="user_phone_number" type="text" class="form-control" id="user_phone_number" value="<?= $row["user_phone_number"] ?>">
                 <span class="form-text text-danger" idn="phoneErrorText"></span>
             </div>
-            <div class="mb-3">
+            <div class="input-group mb-3">
                 <!-- 下拉選單 -->
-                <label for="user_sex" class="form-label">性別</label>
+                <label for="user_sex" class="input-group-text">性別</label>
                 <select name="user_sex" id="user_sex" class="form-select">
                     <option value="1" <?= ($row["user_sex"] == 1) ? "selected" : "" ?>>男性</option>
                     <option value="2" <?= ($row["user_sex"] == 2) ? "selected" : "" ?>>女性</option>
                 </select>
                 <span class="form-text text-danger" idn="userSexErrorText"></span>
             </div>
-            <div class="mb-3">
-                <label for="user_birthday" class="form-label">生日</label>
+            <div class="input-group mb-3">
+                <label for="user_birthday" class="input-group-text">生日</label>
                 <input name="user_birthday" type="date" class="form-control" id="user_birthday" value="<?= $row["user_birthday"] ?>">
                 <span class="form-text text-danger" idn="userBirthdayErrorText"></span>
             </div>
-            <div class="mb-3">
+            <div class="input-group mb-3">
                 <!-- 下拉選單 -->
-                <label for="cityId" class="form-label">居住縣市</label>
+                <label for="cityId" class="input-group-text">居住縣市</label>
                 <select name="city_id" id="cityId" class="form-select">
                     <option value="" disabled> 請選擇 </option>
                     <option value="臺北市" <?= ($row["city_id"] == "臺北市") ? "selected" : "" ?>>臺北市</option>
@@ -152,47 +290,126 @@ try {
                 </select>
                 <span class="form-text text-danger" idn="cityIdErrorText"></span>
             </div>
-            <div class="mb-3">
+            <div class="input-group mb-3">
                 <!-- 下拉選單 -->
-                <label for="districtId" class="form-label">行政區域</label>
+                <label for="districtId" class="input-group-text">行政區域</label>
                 <select name="district_id" id="districtId" class="form-select">
                     <option value="<?= $row["district_id"] ?>"> <?= $row["district_id"] ?> </option>
                 </select>
                 <span class="form-text text-danger" idn="districtIdErrorText"></span>
             </div>
-            <div class="mb-3">
-                <label for="user_address" class="form-label">地址</label>
+            <div class="input-group mb-3">
+                <label for="user_address" class="input-group-text">地址</label>
                 <input name="user_address" class="form-control" id="user_address" value="<?= $row["user_address"] ?>">
                 <span class="form-text text-danger" idn="userAddressErrorText"></span>
             </div>
-            <div class="mb-3 form-check">
+            <div class="input-group mb-3 form-check">
                 <!-- 單選 -->
                 <span>是否為教練</span>
-                <div class="form-check form-check-inline">
+                <div class="form-check ">
                     <input type="radio" name="role_id" id="exampleCheck1" class="btn-check" value="1" <?= ($row["role_id"] == 1) ? "checked" : "" ?>>
-                    <label class="btn btn-outline-danger" for="exampleCheck1">是</label>
+                    <label class="btn btn-outline-two text-one" for="exampleCheck1">是</label>
                 </div>
-                <div class="form-check form-check-inline">
+                <div class="form-check ">
                     <input type="radio" name="role_id" class="btn-check" id="exampleCheck2" value="0" <?= ($row["role_id"] == 0) ? "checked" : "" ?>>
-                    <label class="btn btn-outline-danger" for="exampleCheck2">否</label>
+                    <label class="btn btn-outline-two text-one" for="exampleCheck2">否</label>
                 </div>
             </div>
-            <div class="mb-3 form-check">
+            <div class="input-group mb-3 form-check">
                 <!-- 單選 -->
                 <span>Email驗證</span>
                 <div class="form-check form-check-inline">
                     <input type="radio" class="btn-check" id="exampleCheck3" value="1" name="is_active" <?= ($row["is_active"] == 1) ? "checked" : "" ?>>
-                    <label class="btn btn-outline-danger" for="exampleCheck3">已完成驗證</label>
+                    <label class="btn btn-outline-two text-one" for="exampleCheck3">已完成驗證</label>
                 </div>
                 <div class="form-check form-check-inline">
                     <input type="radio" class="btn-check" id="exampleCheck4" value="0" name="is_active" <?= ($row["is_active"] == 0) ? "checked" : "" ?>>
-                    <label class="btn btn-outline-danger" for="exampleCheck4">未通過驗證</label>
+                    <label class="btn btn-outline-two text-one" for="exampleCheck4">未通過驗證</label>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary" id="modifyConfirmButton">送出</button>
+            <button type="submit" class="btn btn-one" id="modifyConfirmButton">送出</button>
         </form>
     </div>
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script>
+        // 頁面載入時初始化樣式
+        document.addEventListener("DOMContentLoaded", function() {
+            const firstBtn = document.querySelector(".btn1");
+            firstBtn.classList.add("shadow", "bg-white");
+            const firstIcon = firstBtn.querySelector("i");
+            firstIcon.classList.remove("text-white");
+            firstIcon.classList.add("text-one");
 
+            // 觸發第一個按鈕的 click 事件來更新內容
+            firstBtn.click();
+        });
+
+        document.querySelectorAll(".menu-btn").forEach((menuDiv) => {
+            menuDiv.addEventListener("click", function(event) {
+                document.querySelectorAll(".menu-btn").forEach((div) => {
+                    div.classList.remove("shadow", "bg-white");
+                    const icon = div.querySelector("i");
+                    icon.classList.remove("text-one");
+                    icon.classList.add("text-white");
+                });
+
+                this.classList.add("shadow", "bg-white");
+                const currentIcon = this.querySelector("i");
+                currentIcon.classList.remove("text-white");
+                currentIcon.classList.add("text-one");
+            });
+        });
+
+        const btn1 = document.querySelector(".btn1");
+        const btn2 = document.querySelector(".btn2");
+        const btn3 = document.querySelector(".btn3");
+        const btn4 = document.querySelector(".btn4");
+        const btn5 = document.querySelector(".btn5");
+        const btn6 = document.querySelector(".btn6");
+        const btn7 = document.querySelector(".btn7");
+        const accordionButton = document.querySelector(".accordion-button");
+        const accordionBody = document.querySelector(".accordion-body");
+
+        btn1.addEventListener("click", (e) => {
+            // accordionButton.textContent = "會員管理";
+            accordionButton.innerHTML =
+                '<span class="menu-icon"><i class="fa-solid fa-user-group fs-5"></i></span><span class="menu-title">會員管理</span>';
+            accordionBody.innerHTML = '<li><a href="">會員列表</a></li>';
+        });
+        btn2.addEventListener("click", (e) => {
+            accordionButton.innerHTML =
+                '<span class="menu-icon"><i class="fa-solid fa-store fs-5"></i></span><span class="menu-title">商品管理</span>';
+            accordionBody.innerHTML = '<li><a href="#">商品列表</a></li>';
+        });
+        btn3.addEventListener("click", (e) => {
+            accordionButton.innerHTML =
+                '<span class="menu-icon"><i class="fa-regular fa-calendar fs-5"></i></span><span class="menu-title">課程管理</span>';
+            accordionBody.innerHTML = '<li><a href="#">課程列表</a></li>';
+        });
+        btn4.addEventListener("click", (e) => {
+            accordionButton.innerHTML =
+                '<span class="menu-icon"><i class="fa-brands fa-blogger fs-5"></i></span><span class="menu-title">部落格</span>';
+            accordionBody.innerHTML = '<li><a href="#">文章列表</a></li>';
+        });
+        btn5.addEventListener("click", (e) => {
+            accordionButton.innerHTML =
+                '<span class="menu-icon"><i class="fa-regular fa-map fs-5"></i></span><span class="menu-title">潛點地圖</span>';
+            accordionBody.innerHTML = '<li><a href="#">景點列表</a></li>';
+        });
+        btn6.addEventListener("click", (e) => {
+            accordionButton.innerHTML =
+                '<span class="menu-icon"><i class="fa-regular fa-image fs-5"></i></span><span class="menu-title">媒體庫</span>';
+            accordionBody.innerHTML = '<li><a href="#">圖片列表</a></li>';
+        });
+        btn7.addEventListener("click", (e) => {
+            accordionButton.innerHTML =
+                '<span class="menu-icon"><i class="fa-solid fa-address-card fs-5"></i></span><span class="menu-title">員工資料</span>';
+            accordionBody.innerHTML = '<li><a href="#">員工列表</a></li>';
+        });
+    </script>
     <script>
         const selectCity = document.querySelector("#cityId");
         const selectDistrict = document.querySelector("[name=district_id]")

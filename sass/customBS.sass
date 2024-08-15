@@ -1,0 +1,28 @@
+// Custom.scss
+// Option B: Include parts of Bootstrap
+
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "../bootstrap/scss/functions"
+
+// 2. Include any default variable overrides here
+
+// 3. Include remainder of required Bootstrap stylesheets (including any separate color mode stylesheets)
+@import "../bootstrap/scss/variables"
+@import "../bootstrap/scss/variables-dark"
+
+// 4. Include any default map overrides here
+
+//方法一 直接在$theme-colors物件當中新增屬性
+$ben: #006308
+$theme-colors: ("primary": $primary, "secondary": $secondary, "success": $success, "info": $info, "warning": $warning, "danger": $danger, "light": $light, "dark":$dark, "ben":$ben)
+
+//方法二 新增一個客製化物件，再與$theme-colors進行map-merge(推薦)
+$custom-theme-colors: ("one": #02457a, "two": #97cad8, "three": #d6e8ee, "four": #ffb8d0, "five":#fee5e1)
+$theme-colors: map-merge($theme-colors, $custom-theme-colors)
+
+// 5. Include remainder of required parts
+
+//正常方法是要一筆一筆將nav, card, button, modal等components的檔案@import進來，改為直接@import bootstrap.scss可以省去麻煩
+@import "../bootstrap/scss/bootstrap"
+
+// 8. Add additional custom code here

@@ -37,17 +37,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>新增會員</title>
+    <title >新增會員</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Castoro:ital@0;1&family=Noto+Sans+TC:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/customBS.css" />
+    <link rel="stylesheet" href="../css/pageDashboard3.css" />
     <style>
-        .container{
-            width: 65%;
-            padding: 50px 0;
-        }
-        .title{
-            padding: 0 0 30px 0;
-            text-align: center;
-        }
         .info-box{
             display: flex;
             justify-content: space-around;
@@ -57,9 +64,135 @@
         }
     </style>
 </head>
-<body>
+<body class="bg-three d-flex">
+  
+  <nav class="d-flex sticky-top h100vh rounded-end-4">
+    <!-- 綠色欄位 -->
+    <div class="w280px h-100 bg-one position-relative rounded-end-5">
+      <div
+      class="green-area-icon h-100 w80px d-flex flex-column align-items-center"
+      >
+      <!-- 在自己的<div>上加2個class: bg-white shadow -->
+       <!-- 將<i>上的原本的class: text-white 改成 text-one -->
+      <!-- 會員 -->
+        <div
+          class="bg-white shadow menu-btn mt-4 w50px h50px d-flex justify-content-center align-items-center rounded-4 mb-3 btn1 "
+        >
+          <a href="../member/index.php"
+            ><i class="fa-solid fa-user-group text-one fs-4"></i></a>
+        </div>
+        <!-- 商品 -->
+        <div
+          class="menu-btn w50px h50px d-flex justify-content-center align-items-center rounded-4 mb-3 btn2"
+        >
+          <a href="../product/index.php"><i class="fa-solid fa-store text-white fs-4"></i></a>
+        </div>
+        <!-- 課程 -->
+        <div
+          class="menu-btn w50px h50px d-flex justify-content-center align-items-center rounded-4 mb-3 btn3"
+        >
+          <a href="../lesson/index.php"
+            ><i class="fa-regular fa-calendar text-white fs-4"></i
+          ></a>
+        </div>
+        <!-- 部落格 -->
+        <div
+          class="menu-btn w50px h50px d-flex justify-content-center align-items-center rounded-4 mb-3 btn4"
+        >
+          <a href="../blog/blogs.php"><i class="fa-brands fa-blogger text-white fs-4"></i></a>
+        </div>
+        <!-- 潛點地圖 -->
+        <div
+          class="menu-btn w50px h50px d-flex justify-content-center align-items-center rounded-4 mb-3 btn5"
+        >
+          <a href="../DSite/dsList.php"><i class="fa-regular fa-map text-white fs-4"></i></a>
+        </div>
+        <!-- 媒體庫 -->
+        <div
+          class="menu-btn w50px h50px d-flex justify-content-center align-items-center rounded-4 mb-3 btn6"
+        >
+          <a href="../media/mediaLibrary.php"><i class="fa-regular fa-image text-white fs-4"></i></a>
+        </div>
+        <!-- 員工 -->
+        <div
+          class="menu-btn w50px h50px d-flex justify-content-center align-items-center rounded-4 mb-2 mt-auto btn7"
+        >
+          <a href="../employee/index.php"
+            ><i class="fa-solid fa-address-card text-white fs-5"></i
+          ></a>
+        </div>
+        <div
+          class="w50px h50px d-flex justify-content-center align-items-center rounded-4 mb-4"
+        >
+          <a href="#"
+            ><i class="fa-solid fa-right-from-bracket text-white fs-5"></i
+          ></a>
+        </div>
+      </div>
+    </div>
+    <!-- 白色欄位 -->
+    <div
+      class="w200px h-100 d-flex flex-column justify-content-center bg-white card rounded-4 position-absolute white-area"
+    >
+      <!-- logo區 -->
+      <div class="logobox container my-5 d-flex justify-content-center">
+        <img
+          src="../84901e5e1a173e3324e4ba59bf3b9b9f.png"
+          alt=""
+          class="logo"
+        />
+      </div>
+      <!-- 新增按鈕，在a上放自己新增一筆的連結 -->
+      <div class="addBtnBox container text-center mb-5 mt-4">
+        <a href="./pageAdd.php">
+          <button class="btn btn-one"><i class="fa-solid fa-square-plus"></i><span class="px-3">create new</span>
+          </button>
+        </a>
+      </div>
+      <!-- 目錄區(手風琴) -->
+      <div>
+        <div cla>
+          <div class="accordion-title">
+            <!-- 放上icon跟分類名稱 -->
+            <button class="accordion-button text-one ms-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"><span class="menu-icon"><i class="fa-solid fa-user-group text-one fs-5"></i></span><span class="menu-title">會員管理</span></button>
+          </div>
+          <div>
+            <div class="accordion-body mt-3">
+              <!-- 放上子項目名稱&連結 -->
+              <li class="list-a"><a href="#######" class="ms-1">會員列表</a></li>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 其他功能 -->
+      <div class="container mb-3 mt-auto ms-4">
+        <div class="ps-3 text-four">
+          <i class="fa-solid fa-share-nodes"></i>
+          <span class="ps-2">share</span>
+        </div>
+      </div>
+      <div class="container mb-3 ms-4">
+        <div class="ps-3 text-four">
+          <i class="fa-solid fa-clock"></i>
+          <span class="ps-2">recent</span>
+        </div>
+      </div>
+      <div class="container mb-3 ms-4">
+        <div class="ps-3 text-four">
+          <i class="fa-solid fa-star"></i>
+          <span class="ps-2">favorite</span>
+        </div>
+      </div>
+      <div class="container mb-5 ms-4">
+        <div class="ps-3 text-four">
+          <i class="fa-solid fa-trash-can"></i>
+          <span class="ps-2">delete</span>
+        </div>
+      </div>
+    </div>
+  </nav>
 <div class="container">
-        <h1 class="title">新增會員資料</h1>
+        <h1 class="my-5 text-one">新增會員資料</h1>
         <form action="./doInsert.php" method="POST">
             <div class="mb-3">
                 <label for="user_full_name" class="form-label" >姓名</label>
@@ -161,7 +294,7 @@
                     <label class="form-check-label" for="exampleCheck4">未通過驗證</label>
                 </div>
             </div> -->
-            <button type="submit" class="btn btn-primary" id="addDataButton">送出新增</button>
+            <button type="submit" class="btn btn-one" id="addDataButton">送出新增</button>
         </form>
     </div>
     <script>

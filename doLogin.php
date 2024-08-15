@@ -4,17 +4,18 @@
 session_start();
 require_once("./conn.php");
 
-function loginFailed(){
-    if(!isset($_SESSION["error"]["times"])){
-      $_SESSION["error"]["times"] = 1;
-    }else{
-      $_SESSION["error"]["times"]++;  
+function loginFailed()
+{
+    if (!isset($_SESSION["error"]["times"])) {
+        $_SESSION["error"]["times"] = 1;
+    } else {
+        $_SESSION["error"]["times"]++;
     }
     $_SESSION["error"]["timestamp"] = time();
     $_SESSION["error"]["message"] = "登入失敗，請確認帳號碼";
     unset($_SESSION["employee"]);
     echo "登入失敗，請確認帳號碼！";
-  }
+}
 
 
 // if(!isset($_POST["em_email"])){
@@ -62,7 +63,3 @@ if ($row == true) {
     loginFailed();
     exit;
 }
-
-
-
-

@@ -15,14 +15,14 @@ $stmt = $conn->prepare($sql);
 
 
 try {
-    $stmt->execute();
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+  $stmt->execute();
+  $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $conn = NULL;
+  $conn = NULL;
 } catch (PDOException $e) {
-    echo "你的資料讀取失敗欸!因為:" . $e->getMessage();
-    $conn = NULL;
-    exit;
+  echo "你的資料讀取失敗欸!因為:" . $e->getMessage();
+  $conn = NULL;
+  exit;
 }
 
 ?>
@@ -33,134 +33,258 @@ try {
 <html lang="zh-hant-TW">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    <style>
-        .container {
-            width: 65%;
-            padding: 50px 0;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Castoro:ital@0;1&family=Noto+Sans+TC:wght@100..900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="../css/customBS.css" />
+  <link rel="stylesheet" href="../css/pageDashboard3.css" />
+  <style>
+    .info-box {
+      display: flex;
+      justify-content: space-around;
+      border: 1px solid black;
+      margin-bottom: 30px;
+      padding: 15px 0 5px 0;
+      width: 500px;
+    }
 
-        .title {
-            padding: 0 0 30px 0;
-            text-align: center;
-        }
-
-        .info-box {
-            display: flex;
-            justify-content: space-around;
-            border: 1px solid black;
-            margin-bottom: 30px;
-            padding: 15px 0 5px 0;
-        }
-    </style>
+    .form-button {
+      margin: 0 0;
+    }
+  </style>
 </head>
 
-<body>
-    <div class="container">
-        <h1 class="title">編輯員工資料</h1>
-        <form action="./doUpdate.php" method="POST">
-            <div class="info info-box">
-                <div class="mb-3 text-center">
-                    <label for="em_id" class="form-label">員工 ID</label>
-                    <div name="em_id" id="em_id" class="form-text"><?= $row["em_id"] ?></div>
-                </div>
-                <div class="mb-3 text-center">
-                    <label for="em_email" class="form-label">Email</label>
-                    <div name="em_email" class="form-text"><?= $row["em_email"] ?></div>
-                </div>
-                <div class="mb-3 text-center">
-                    <label for="em_hire_date" class="form-label">註冊日期</label>
-                    <div id="em_hire_date" class="form-text"><?= $row["em_hire_date"] ?></div>
-                </div>
-            </div>
-            <div class="mb-3" hidden>
-                <label for="emIdHidden" class="form-label">員工 ID</label>
-                <input name="em_id" type="text" class="form-control" id="emIdHidden" value="<?= $row["em_id"] ?>">
-            </div>
+<body class="bg-three d-flex">
 
-            <div class="mb-3">
-                <label for="em_full_name" class="form-label">姓名</label>
-                <input name="em_full_name" type="text" class="form-control" id="em_full_name" value="<?= $row["em_full_name"] ?>">
-                <span class="form-text text-danger" idn="nameErrorText"></span>
-            </div>
-            
-
-            <div class="mb-3 form-check">
-                <!-- 單選 -->
-                <span>權限角色</span>
-                <div class="form-check form-check-inline">
-                    <input type="radio" name="role_id" class="btn-check" id="exampleCheck1"  value="2" <?= ($row["role_id"] == 2) ? "checked" : "" ?>>
-                    <label class="btn btn-outline-danger" for="exampleCheck1">所有者</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input type="radio" name="role_id" class="btn-check" id="exampleCheck2" value="3" <?= ($row["role_id"] == 3) ? "checked" : "" ?>>
-                    <label class="btn btn-outline-danger" for="exampleCheck2">管理員</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input type="radio" name="role_id" class="btn-check" id="exampleCheck3" value="4" <?= ($row["role_id"] == 4) ? "checked" : "" ?>>
-                    <label class="btn btn-outline-danger" for="exampleCheck3">編輯者</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input type="radio" name="role_id" class="btn-check" id="exampleCheck4" value="5" <?= ($row["role_id"] == 5) ? "checked" : "" ?>>
-                    <label class="btn btn-outline-danger" for="exampleCheck4">工讀生</label>
-                </div>
-            </div>
-            <div class="mb-3 form-check">
-                <!-- 單選 -->
-                <span>是否還在職</span>
-                <div class="form-check form-check-inline">
-                    <input type="radio" class="btn-check" id="exampleCheck5" value="1" name="is_valid" <?= ($row["is_valid"] == 1) ? "checked" : "" ?>>
-                    <label class="btn btn-outline-danger" for="exampleCheck5">在職中</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input type="radio" class="btn-check" id="exampleCheck6" value="0" name="is_valid" <?= ($row["is_valid"] == 0) ? "checked" : "" ?>>
-                    <label class="btn btn-outline-danger" for="exampleCheck6">已離職</label>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary" id="modifyConfirmButton">送出</button>
-        </form>
+  <nav class="d-flex sticky-top h100vh rounded-end-4">
+    <!-- 綠色欄位 -->
+    <div class="w280px h-100 bg-one position-relative rounded-end-5">
+      <div
+        class="green-area-icon h-100 w80px d-flex flex-column align-items-center">
+        <!-- 在自己的<div>上加2個class: bg-white shadow -->
+        <!-- 將<i>上的原本的class: text-white 改成 text-one -->
+        <!-- 會員 -->
+        <div
+          class="menu-btn mt-4 w50px h50px d-flex justify-content-center align-items-center rounded-4 mb-3 btn1 ">
+          <a href="../member/index.php"><i class="fa-solid fa-user-group text-white fs-4"></i></a>
+        </div>
+        <!-- 商品 -->
+        <div
+          class="menu-btn w50px h50px d-flex justify-content-center align-items-center rounded-4 mb-3 btn2">
+          <a href="../product/index.php"><i class="fa-solid fa-store text-white fs-4"></i></a>
+        </div>
+        <!-- 課程 -->
+        <div
+          class="menu-btn w50px h50px d-flex justify-content-center align-items-center rounded-4 mb-3 btn3">
+          <a href="../lesson/index.php"><i class="fa-regular fa-calendar text-white fs-4"></i></a>
+        </div>
+        <!-- 部落格 -->
+        <div
+          class="menu-btn w50px h50px d-flex justify-content-center align-items-center rounded-4 mb-3 btn4">
+          <a href="../blog/blogs.php"><i class="fa-brands fa-blogger text-white fs-4"></i></a>
+        </div>
+        <!-- 潛點地圖 -->
+        <div
+          class="menu-btn w50px h50px d-flex justify-content-center align-items-center rounded-4 mb-3 btn5">
+          <a href="../DSite/dsList.php"><i class="fa-regular fa-map text-white fs-4"></i></a>
+        </div>
+        <!-- 媒體庫 -->
+        <div
+          class="menu-btn w50px h50px d-flex justify-content-center align-items-center rounded-4 mb-3 btn6">
+          <a href="../media/mediaLibrary.php"><i class="fa-regular fa-image text-white fs-4"></i></a>
+        </div>
+        <!-- 員工 -->
+        <div
+          class="bg-white shadow menu-btn w50px h50px d-flex justify-content-center align-items-center rounded-4 mb-2 mt-auto btn7">
+          <a href="../employee/index.php"><i class="fa-solid fa-address-card text-one fs-5"></i></a>
+        </div>
+        <div
+          class="w50px h50px d-flex justify-content-center align-items-center rounded-4 mb-4">
+          <a href="#"><i class="fa-solid fa-right-from-bracket text-white fs-5"></i></a>
+        </div>
+      </div>
     </div>
+    <!-- 白色欄位 -->
+    <div
+      class="w200px h-100 d-flex flex-column justify-content-center bg-white card rounded-4 position-absolute white-area">
+      <!-- logo區 -->
+      <div class="logobox container my-5 d-flex justify-content-center">
+        <img
+          src="../84901e5e1a173e3324e4ba59bf3b9b9f.png"
+          alt=""
+          class="logo" />
+      </div>
+      <!-- 新增按鈕，在a上放自己新增一筆的連結 -->
+      <div class="addBtnBox container text-center mb-5 mt-4">
+        <a href="./pageAdd.php">
+          <button class="btn btn-one"><i class="fa-solid fa-square-plus"></i><span class="px-3">create new</span>
+          </button>
+        </a>
+      </div>
+      <!-- 目錄區(手風琴) -->
+      <div>
+        <div cla>
+          <div class="accordion-title">
+            <!-- 放上icon跟分類名稱 -->
+            <button class="accordion-button text-one ms-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"><span class="menu-icon"><i class="fa-solid fa-address-card text-one fs-5"></i></span><span class="menu-title">員工管理</span></button>
+          </div>
+          <div>
+            <div class="accordion-body mt-3">
+              <!-- 放上子項目名稱&連結 -->
+              <li class="list-a"><a href="#######" class="ms-1">員工列表</a></li>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 其他功能 -->
+      <div class="container mb-3 mt-auto ms-4">
+        <div class="ps-3 text-four">
+          <i class="fa-solid fa-share-nodes"></i>
+          <span class="ps-2">share</span>
+        </div>
+      </div>
+      <div class="container mb-3 ms-4">
+        <div class="ps-3 text-four">
+          <i class="fa-solid fa-clock"></i>
+          <span class="ps-2">recent</span>
+        </div>
+      </div>
+      <div class="container mb-3 ms-4">
+        <div class="ps-3 text-four">
+          <i class="fa-solid fa-star"></i>
+          <span class="ps-2">favorite</span>
+        </div>
+      </div>
+      <div class="container mb-5 ms-4">
+        <div class="ps-3 text-four">
+          <i class="fa-solid fa-trash-can"></i>
+          <span class="ps-2">delete</span>
+        </div>
+      </div>
+    </div>
+  </nav>
 
-    <script>
-        // 欄位判斷
-        const form = document.querySelector("form");
-        const emFullName = document.querySelector("#em_full_name");
-        const nameErrorText = document.querySelector("[idn=nameErrorText]");
+
+  <div class="container">
+    <div class="d-flex justify-content-between">
+      <h1 class="my-5 text-one">編輯員工資料</h1>
+      <div class="info info-box bg-one rounded-2 text-light align-self-end">
+        <div class="mb-3  text-center">
+          <label for="em_id" class="form-label">員工 ID</label>
+          <div name="em_id" id="em_id" class="text-light"><?= $row["em_id"] ?></div>
+        </div>
+        <div class="mb-3 text-center">
+          <label for="em_email" class="form-label">Email</label>
+          <div name="em_email" class="text-light"><?= $row["em_email"] ?></div>
+        </div>
+        <div class="mb-3 text-center">
+          <label for="em_hire_date" class="form-label">註冊日期</label>
+          <div id="em_hire_date" class="text-light"><?= $row["em_hire_date"] ?></div>
+        </div>
+      </div>
+    </div>
+    <form action="./doUpdate.php" method="POST">
+      <div class="mb-3" hidden>
+        <label for="emIdHidden" class="form-label">員工 ID</label>
+        <input name="em_id" type="text" class="form-control" id="emIdHidden" value="<?= $row["em_id"] ?>">
+      </div>
 
 
 
-        // 動態的欄位判斷
-            emFullName.addEventListener("input", e => {
-            nameErrorText.textContent = "";
-            let isChinese = /^[\u4e00-\u9fa5]+$/;
-            if (!isChinese.test(emFullName.value) || emFullName.value == "") {
-                e.preventDefault();
-                nameErrorText.textContent = "請輸入中文姓名";
-            }
-        })
+      <div class="mb-3">
+        <label for="em_full_name" class="form-label">姓名</label>
+        <input name="em_full_name" type="text" class="form-control" id="em_full_name" value="<?= $row["em_full_name"] ?>">
+        <span class="form-text text-danger" idn="nameErrorText"></span>
+      </div>
+
+      <div class="mb-3 form-check">
+        <!-- 單選 -->
+        <span>權限角色</span>
+        <div class="form-check form-check-inline form-button">
+          <input type="radio" name="role_id" class="btn-check" id="exampleCheck1" value="2" <?= ($row["role_id"] == 2) ? "checked" : "" ?>>
+          <label class="btn btn-outline-two text-one" for="exampleCheck1">所有者</label>
+        </div>
+        <div class="form-check form-check-inline form-button">
+          <input type="radio" name="role_id" class="btn-check" id="exampleCheck2" value="3" <?= ($row["role_id"] == 3) ? "checked" : "" ?>>
+          <label class="btn btn-outline-two text-one " for="exampleCheck2">管理員</label>
+        </div>
+        <div class="form-check form-check-inline form-button">
+          <input type="radio" name="role_id" class="btn-check" id="exampleCheck3" value="4" <?= ($row["role_id"] == 4) ? "checked" : "" ?>>
+          <label class="btn btn-outline-two text-one" for="exampleCheck3">編輯者</label>
+        </div>
+        <div class="form-check form-check-inline form-button">
+          <input type="radio" name="role_id" class="btn-check" id="exampleCheck4" value="5" <?= ($row["role_id"] == 5) ? "checked" : "" ?>>
+          <label class="btn btn-outline-two text-one" for="exampleCheck4">工讀生</label>
+        </div>
+      </div>
+      <div class="mb-3 form-check">
+        <!-- 單選 -->
+        <span>是否還在職</span>
+        <div class="form-check form-check-inline">
+          <input type="radio" class="btn-check" id="exampleCheck5" value="1" name="is_valid" <?= ($row["is_valid"] == 1) ? "checked" : "" ?>>
+          <label class="btn btn-outline-two text-one" for="exampleCheck5">在職中</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input type="radio" class="btn-check" id="exampleCheck6" value="0" name="is_valid" <?= ($row["is_valid"] == 0) ? "checked" : "" ?>>
+          <label class="btn btn-outline-two text-one" for="exampleCheck6">已離職</label>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-one" id="modifyConfirmButton">送出</button>
+
+  </div>
+
+  </form>
+  </div>
+
+  <script>
+    // 欄位判斷
+    const form = document.querySelector("form");
+    const emFullName = document.querySelector("#em_full_name");
+    const nameErrorText = document.querySelector("[idn=nameErrorText]");
 
 
 
-        // 提交表單後的欄位判斷
-        form.addEventListener("submit", e => {
-            let isChinese = /^[\u4e00-\u9fa5]+$/;
+    // 動態的欄位判斷
+    emFullName.addEventListener("input", e => {
+      nameErrorText.textContent = "";
+      let isChinese = /^[\u4e00-\u9fa5]+$/;
+      if (!isChinese.test(emFullName.value) || emFullName.value == "") {
+        e.preventDefault();
+        nameErrorText.textContent = "請輸入中文姓名";
+      }
+    })
 
-            nameErrorText.textContent = "";
 
-            if (!isChinese.test(emFullName.value) || emFullName.value == "") {
-                e.preventDefault();
-                nameErrorText.textContent = "請輸入中文姓名";
-            }
 
-            // comfirm更新要新增的提示
-            if (confirm("確認要更改這筆員工資料?") == false) {
-                e.preventDefault();
-            }
-        })
-    </script>
+    // 提交表單後的欄位判斷
+    form.addEventListener("submit", e => {
+      let isChinese = /^[\u4e00-\u9fa5]+$/;
+
+      nameErrorText.textContent = "";
+
+      if (!isChinese.test(emFullName.value) || emFullName.value == "") {
+        e.preventDefault();
+        nameErrorText.textContent = "請輸入中文姓名";
+      }
+
+      // comfirm更新要新增的提示
+      if (confirm("確認要更改這筆員工資料?") == false) {
+        e.preventDefault();
+      }
+    })
+  </script>
 </body>
 
 </html>
